@@ -11,7 +11,12 @@ class LocalityResource extends JsonResource
         return [
             'id' => $this->id,
             'siruta_code' => $this->siruta_code,
-            'name' => $this->name,
+            'parent' => $this->parent ? [
+                'name' => $this->parent->name,
+                'type' => $this->parent->type,
+                'siruta_code' => $this->parent->siruta_code,
+            ] : null,
+            'name' => $this->cleanName($this->name),
             'name_ascii' => $this->name_ascii,
             'type' => $this->type,
             'postal_code' => $this->postal_code,
@@ -19,4 +24,10 @@ class LocalityResource extends JsonResource
             'lng' => $this->lng,
         ];
     }
+
+    private function cleanName($name): array|string|null
+    {
+        return preg_replace('/^(Municipiul|Municipiu|Orasul|Oras|Orașul|Oraș|Comuna|Satul)\s+/iu', '', $name);
+    }
+
 }

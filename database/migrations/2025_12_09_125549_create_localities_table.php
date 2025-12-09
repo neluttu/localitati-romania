@@ -13,6 +13,7 @@ return new class extends Migration {
         Schema::create('localities', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('siruta_code')->unique();
+            $table->unsignedInteger('siruta_parent')->nullable();
             $table->foreignId('county_id')->constrained('counties')->cascadeOnDelete();
 
             $table->string('name');

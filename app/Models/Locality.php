@@ -3,11 +3,14 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Locality extends Model
 {
     protected $fillable = [
         'siruta_code',
+        'siruta_parent',
         'county_id',
         'name',
         'type',
@@ -17,10 +20,22 @@ class Locality extends Model
         'name_ascii',
     ];
 
-    public function county()
+    public function county(): BelongsTo
     {
         return $this->belongsTo(County::class);
     }
+
+    public function parent(): BelongsTo
+    {
+        return $this->belongsTo(Locality::class, 'siruta_parent', 'siruta_code');
+    }
+
+
+    public function children(): HasMany
+    {
+        return $this->hasMany(Locality::class, 'siruta_parent', 'siruta_code');
+    }
+
 
     public function scopeOrdered($query): mixed
     {

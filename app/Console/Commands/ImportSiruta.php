@@ -147,6 +147,7 @@ class ImportSiruta extends Command
 
             $buffer[] = [
                 'siruta_code' => $row[$col['siruta']],
+                'siruta_parent' => $row[$col['sirsup']] ?? null,
                 'county_id' => $countyIdByJud[$judCode],
                 'name' => $name,
                 'name_ascii' => $this->toAscii($name),

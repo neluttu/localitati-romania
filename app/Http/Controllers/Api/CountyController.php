@@ -8,9 +8,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CountyResource;
 use App\Http\Resources\LocalityResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use App\Services\LocalityService;
 
 class CountyController extends Controller
 {
+    public function __construct(protected LocalityService $localityService)
+    {
+
+    }
+
     public function index(): AnonymousResourceCollection
     {
         // Lista județelor nu se schimbă → cache forever
@@ -24,38 +30,15 @@ class CountyController extends Controller
 
     public function localities(County $county): AnonymousResourceCollection
     {
-        $cacheKey = "county_{$county->id}_localities";
-
-        $localities = cache()->rememberForever($cacheKey, function () use ($county) {
-            return $county->localities()
-                ->whereIn('type', [1, 2, 3, 4, 5, 22, 23])
-                ->ordered()
-                ->get();
-
-        });
+        $localities = $this->localityService->getLocalities($county);
 
         return LocalityResource::collection($localities);
     }
 
     public function localitiesGrouped(County $county): JsonResponse
     {
-        $cacheKey = "county_{$county->id}_localities_grouped";
-
-        $data = cache()->rememberForever($cacheKey, function () use ($county) {
-
-            $localities = $county->localities()->ordered()->get();
-
-            return [
-                'municipii' => $localities->whereIn('type', [1, 4])->values(),
-                'orase' => $localities->whereIn('type', [2, 5])->values(),
-                'comune' => $localities->where('type', 3)->values(),
-                'sate' => $localities->whereIn('type', [22, 23])->values(),
-            ];
-        });
+        $data = $this->localityService->getLocalitiesGrouped($county);
 
         return response()->json($data);
     }
-
-
-
 }
