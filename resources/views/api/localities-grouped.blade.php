@@ -21,13 +21,12 @@
     <script>
         const currentCounty = "{{ strtoupper($county) }}";
 
-        // 🔥 FETCH JUDEȚE + POPULARE SELECT
-        fetch('/api/counties')
+        // FETCH JUDEȚE + POPULARE SELECT
+        fetch('/api/v1/counties')
             .then(res => res.json())
             .then(response => {
 
-                const counties = response.data; // 🔥 AICI ERA PROBLEMA
-
+                const counties = response.data;
                 const countySelect = document.querySelector('select[name="county"]');
                 let html = '<option value="">Alege județul...</option>';
 
@@ -47,8 +46,8 @@
             });
 
 
-        // 🔥 FETCH LOCALITĂȚI + SELECT + TABEL
-        fetch(`/api/counties/{{ $county }}/localities-grouped`)
+        // FETCH LOCALITĂȚI + SELECT + TABEL
+        fetch(`/api/v1/counties/{{ $county }}/localities-grouped`)
             .then(res => res.json())
             .then(groups => {
 
@@ -90,25 +89,25 @@
                 </thead>
                 <tbody>
                     ${items.map(i => `
-                                        <tr>
-                                            <td class="p-2 border">${i.siruta_code}</td>
-                                            <td class="p-2 border">
-                                                ${i.name}
-                                                ${i.parent && i.name !== i.parent.name
-                                                    ? ` <span class="text-gray-500 text-sm">(${i.parent.name})</span>`
-                                                    : ''
-                                                }
-                                            </td>
-                                            <td class="p-2 border text-center">${i.postal_code && i.postal_code !== "000000" ? i.postal_code : "-"}</td>
-                                            <td class="p-2 border text-center">
-                                                ${i.lat && i.lng
-                                                    ? `<a href="https://www.google.com/maps?q=${i.lat},${i.lng}" 
-                                        target="_blank" class="text-blue-600">📍</a>`
-                                                    : `-`
-                                                }
-                                            </td>
-                                        </tr>
-                                    `).join('')}
+        <tr>
+            <td class="p-2 border">${i.siruta_code}</td>
+            <td class="p-2 border">
+                ${i.name}
+                ${i.parent && i.name !== i.parent.name
+                    ? ` <span class="text-gray-500 text-sm">(${i.parent.name})</span>`
+                    : ''
+                }
+            </td>
+            <td class="p-2 border text-center">${i.postal_code && i.postal_code !== "000000" ? i.postal_code : "-"}</td>
+            <td class="p-2 border text-center">
+                ${i.lat && i.lng
+                    ? `<a href="https://www.google.com/maps?q=${i.lat},${i.lng}" 
+target="_blank" class="text-blue-600">📍</a>`
+                    : `-`
+                }
+            </td>
+        </tr>
+        `).join('')}
                 </tbody>
             </table>
         `;

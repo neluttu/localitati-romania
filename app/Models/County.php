@@ -21,12 +21,9 @@ class County extends Model
         return $this->hasMany(Locality::class);
     }
 
-    public function resolveRouteBinding($value, $field = null): County
+    public function getRouteKeyName(): string
     {
-        return $this->where('id', $value)
-            ->orWhere('abbr', strtoupper($value))
-            ->firstOrFail();
+        return 'abbr';
     }
-
 }
 
