@@ -1,51 +1,33 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Services;
 
 use App\Models\County;
 use App\Http\Resources\LocalityResource;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Cache;
+use App\Repositories\LocalityRepository;
 
 class LocalityService
 {
-    public function getLocalities(County $county): Collection
-    {
-        $cacheKey = "county_{$county->id}_localities_raw";
-
-        // Cache DOAR modelele brute
-        $localities = Cache::rememberForever($cacheKey, function () use ($county) {
-            return $county->localities()
-                ->with('parent')
-                ->ordered()
-                ->get();
-        });
-
-        return $localities;
+    public function __construct(
+        protected LocalityRepository $localities
+    ) {
     }
 
-    public function getLocalitiesGrouped(County $county): array
+    public function getByCounty(County $county)
     {
-        $localities = $this->getLocalities($county);
+        return $this->localities->getByCounty($county);
+    }
+
+    public function getGroupedByCounty(County $county): array
+    {
+        $groups = $this->localities->getGroupedByCounty($county);
 
         return [
-            'municipii' => LocalityResource::collection(
-                $localities->whereIn('type', [1, 4])->values()
-            ),
-            'orase' => LocalityResource::collection(
-                $localities->whereIn('type', [2, 5])->values()
-            ),
-            'comune' => LocalityResource::collection(
-                $localities->where('type', 3)->values()
-            ),
-            'sate' => LocalityResource::collection(
-                $localities->whereIn('type', [22, 23])->values()
-            ),
+            'municipii' => LocalityResource::collection($groups['municipii']),
+            'orase' => LocalityResource::collection($groups['orase']),
+            'comune' => LocalityResource::collection($groups['comune']),
+            'sate' => LocalityResource::collection($groups['sate']),
         ];
-    }
-
-    public function clearCache(County $county): void
-    {
-        Cache::forget("county_{$county->id}_localities_raw");
     }
 }

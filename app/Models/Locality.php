@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace App\Models;
 
+use App\Enums\LocalityType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -19,6 +20,13 @@ class Locality extends Model
         'lng',
         'name_ascii',
     ];
+
+    protected $appends = ['display_name'];
+
+    protected $casts = [
+        'type' => LocalityType::class,
+    ];
+
 
     public function county(): BelongsTo
     {
@@ -39,21 +47,19 @@ class Locality extends Model
 
     public function scopeOrdered($query): mixed
     {
+        $order = implode(',', LocalityType::orderList());
+
         return $query
-            ->orderByRaw("
-            CASE 
-                WHEN type = 1 THEN 1
-                WHEN type = 4 THEN 2
-                WHEN type = 2 THEN 3
-                WHEN type = 5 THEN 4
-                WHEN type = 3 THEN 5
-                WHEN type = 22 THEN 6
-                WHEN type = 23 THEN 7
-                ELSE 99
-            END
-        ")
+            ->orderByRaw("FIELD(type, $order)")
             ->orderBy('name');
     }
+
+
+    public function getDisplayNameAttribute(): string
+    {
+        return preg_replace('/^(Municipiul|Municipiu|Orașul|Oraș|Comuna|Satul|Sat)\s+/iu', '', $this->name);
+    }
+
 
 }
 

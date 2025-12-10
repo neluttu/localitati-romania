@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Enums;
+
+enum LocalityType: int
+{
+    case MUNICIPIU_RESEDINTA = 1;
+    case ORAS = 2;
+    case COMUNA = 3;
+    case MUNICIPIU = 4;
+    case ORAS_RESEDINTA = 5;
+    case SECTOR = 6;
+    case COMPONENTA_RESEDINTA_MUNICIPIU = 9;
+    case COMPONENTA_MUNICIPIU = 10;
+    case SAT_APARTINATOR_MUNICIPIU = 11;
+    case COMPONENTA_RESEDINTA_ORAS = 17;
+    case COMPONENTA_ORAS = 18;
+    case SAT_APARTINATOR_ORAS = 19;
+    case SAT_RESEDINTA_COMUNA = 22;
+    case SAT = 23;
+
+    case UNKNOWN = 99;
+
+    public function label(): string
+    {
+        return match ($this) {
+            self::MUNICIPIU_RESEDINTA => 'Municipiu reședință de județ',
+            self::MUNICIPIU => 'Municipiu',
+            self::ORAS => 'Oraș',
+            self::ORAS_RESEDINTA => 'Oraș reședință de județ',
+            self::COMUNA => 'Comună',
+            self::SAT_RESEDINTA_COMUNA => 'Sat reședință de comună',
+            self::SAT => 'Sat',
+            default => 'Localitate'
+        };
+    }
+
+    public function group(): string
+    {
+        return match ($this) {
+            self::MUNICIPIU_RESEDINTA,
+            self::MUNICIPIU => 'municipii',
+
+            self::ORAS,
+            self::ORAS_RESEDINTA => 'orase',
+
+            self::COMUNA => 'comune',
+
+            self::SAT_RESEDINTA_COMUNA,
+            self::SAT => 'sate',
+
+            default => 'altele'
+        };
+    }
+
+    public function sortOrder(): int
+    {
+        return match ($this) {
+            self::MUNICIPIU_RESEDINTA => 1,
+            self::MUNICIPIU => 2,
+            self::ORAS => 3,
+            self::ORAS_RESEDINTA => 4,
+            self::COMUNA => 5,
+            self::SAT_RESEDINTA_COMUNA => 6,
+            self::SAT => 7,
+            default => 99,
+        };
+    }
+
+    public static function orderList(): array
+    {
+        return [
+            self::MUNICIPIU_RESEDINTA->value,
+            self::MUNICIPIU->value,
+            self::ORAS->value,
+            self::ORAS_RESEDINTA->value,
+            self::COMUNA->value,
+            self::SAT_RESEDINTA_COMUNA->value,
+            self::SAT->value,
+        ];
+    }
+
+
+}
