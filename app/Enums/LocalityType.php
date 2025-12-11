@@ -27,6 +27,7 @@ enum LocalityType: int
             self::MUNICIPIU_RESEDINTA => 'Municipiu reședință de județ',
             self::MUNICIPIU => 'Municipiu',
             self::ORAS => 'Oraș',
+            self::SECTOR => 'Sector',
             self::ORAS_RESEDINTA => 'Oraș reședință de județ',
             self::COMUNA => 'Comună',
             self::SAT_RESEDINTA_COMUNA => 'Sat reședință de comună',
@@ -48,6 +49,7 @@ enum LocalityType: int
 
             self::SAT_RESEDINTA_COMUNA,
             self::SAT => 'sate',
+            self::SECTOR => 'sectoare',
 
             default => 'altele'
         };
@@ -63,6 +65,7 @@ enum LocalityType: int
             self::COMUNA => 5,
             self::SAT_RESEDINTA_COMUNA => 6,
             self::SAT => 7,
+            self::SECTOR => 8,
             default => 99,
         };
     }
@@ -77,6 +80,7 @@ enum LocalityType: int
             self::COMUNA->value,
             self::SAT_RESEDINTA_COMUNA->value,
             self::SAT->value,
+            self::SECTOR->value,
         ];
     }
 

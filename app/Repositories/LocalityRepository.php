@@ -41,6 +41,10 @@ class LocalityRepository extends BaseRepository
                 LocalityType::SAT,
                 LocalityType::SAT_RESEDINTA_COMUNA,
             ])->values(),
+
+            'sectoare' => $localities->whereIn('type', [
+                LocalityType::SECTOR,
+            ])->values(),
         ];
     }
 }

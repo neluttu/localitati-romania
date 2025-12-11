@@ -28,6 +28,7 @@ class LocalityService
             'orase' => LocalityResource::collection($groups['orase']),
             'comune' => LocalityResource::collection($groups['comune']),
             'sate' => LocalityResource::collection($groups['sate']),
+            'sectoare' => LocalityResource::collection($groups['sectoare']),
         ];
     }
 }

@@ -3,7 +3,7 @@
 @section('content')
     <div class="max-w-4xl mx-auto py-10">
         <h1 class="text-2xl font-bold mb-4">Lista Județelor</h1>
-
+        <p class="text-gray-600 mb-4">Total județe: <span id="count"></span></p>
         <table class="w-full border text-left">
             <thead class="bg-gray-100">
                 <tr>
@@ -24,6 +24,7 @@
             .then(res => res.json())
             .then(data => {
                 let html = '';
+                document.getElementById('count').innerText = data.data.length;
                 data.data.forEach(c => {
                     html += `
                 <tr>
