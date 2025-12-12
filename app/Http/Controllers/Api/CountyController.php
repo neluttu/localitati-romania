@@ -7,6 +7,7 @@ use App\Services\CountyService;
 use App\Services\LocalityService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Resources\CountyResource;
 use App\Http\Resources\LocalityResource;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
@@ -19,23 +20,52 @@ class CountyController extends Controller
     ) {
     }
 
-    public function index(): AnonymousResourceCollection
+    public function index(): JsonResponse
     {
-        return CountyResource::collection(
-            resource: $this->countyService->all()
-        );
+        $counties = $this->countyService->all();
+        return response()->json([
+            'data' => CountyResource::collection($counties),
+            'meta' => [
+                'total' => $counties->count(),
+            ],
+        ]);
     }
 
     public function localities(County $county): JsonResponse
     {
-        $groups = $this->localityService->getGroupedByCounty($county);
+        $cacheKey = "api:v1:counties:{$county->abbr}:localities";
+
+        $groups = Cache::remember(
+            $cacheKey,
+            now()->addDays(90),
+            fn() => $this->localityService->getGroupedByCounty($county)
+        );
+
+        // asigurăm existența cheilor
+        $municipii = $groups['municipii'] ?? collect();
+        $orase = $groups['orase'] ?? collect();
+        $comune = $groups['comune'] ?? collect();
+        $sate = $groups['sate'] ?? collect();
+        $sectoare = $groups['sectoare'] ?? collect();
 
         return response()->json([
-            'municipii' => LocalityResource::collection($groups['municipii']),
-            'orase' => LocalityResource::collection($groups['orase']),
-            'comune' => LocalityResource::collection($groups['comune']),
-            'sate' => LocalityResource::collection($groups['sate']),
-            'sectoare' => LocalityResource::collection($groups['sectoare']),
+            'data' => [
+                'municipii' => LocalityResource::collection($municipii),
+                'orase' => LocalityResource::collection($orase),
+                'comune' => LocalityResource::collection($comune),
+                'sate' => LocalityResource::collection($sate),
+                'sectoare' => LocalityResource::collection($sectoare),
+            ],
+            'meta' => [
+                'county' => new CountyResource($county),
+                'counts' => [
+                    'municipii' => $municipii->count(),
+                    'orase' => $orase->count(),
+                    'comune' => $comune->count(),
+                    'sate' => $sate->count(),
+                    'sectoare' => $sectoare->count(),
+                ],
+            ],
         ]);
     }
 }

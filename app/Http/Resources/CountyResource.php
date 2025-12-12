@@ -11,10 +11,10 @@ class CountyResource extends JsonResource
         return [
             'id' => $this['id'],
             'name' => $this['name'],
-            'abbr' => $this['abbr'],
-            'siruta_code' => $this['siruta_code'],
-            'code' => $this['code'],
-            'region' => $this['region'],
+            'code' => $this['abbr'],
+            // 'abbr' => $this['abbr'],
+            // 'siruta_code' => $this['siruta_code'],
+            // 'region' => $this['region'],
         ];
     }
 }

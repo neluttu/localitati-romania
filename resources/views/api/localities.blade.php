@@ -37,13 +37,14 @@
                 let html = '<option value="">Alege județul...</option>';
 
                 counties.forEach(c => {
-                    html += `<option value="${c.abbr}" ${c.abbr === currentCounty ? 'selected' : ''}>
-                    ${c.name}
-                </option>`;
+                    html += `<option value="${c.code}" ${c.code === currentCounty ? 'selected' : ''}>
+                ${c.name}
+            </option>`;
                 });
 
                 countySelect.innerHTML = html;
             });
+
 
         // ------------------------------
         // 2. LOAD LOCALITIES FUNCTION
@@ -56,92 +57,97 @@
 
             fetch(`/v1/counties/${county}/localities`)
                 .then(res => res.json())
-                .then(groups => {
+                .then(response => {
 
-                    // --- SELECT LOCALITĂȚI ---
-                    const buildSelectOptions = () => {
-                        const total =
-                            groups.municipii.length +
-                            groups.sectoare.length +
-                            groups.orase.length +
-                            groups.comune.length +
-                            groups.sate.length;
+                    const data = response.data;
+                    const counts = response.meta.counts;
 
-                        countSpan.innerText = total;
+                    // ------------------------------
+                    // COUNT (din meta, nu calculat)
+                    // ------------------------------
+                    const total =
+                        counts.municipii +
+                        counts.sectoare +
+                        counts.orase +
+                        counts.comune +
+                        counts.sate;
 
-                        let options = '<option value="">Alege localitatea...</option>';
+                    countSpan.innerText = total;
 
-                        const add = (items) => {
-                            items.forEach(i => {
-                                const label = i.parent && i.name !== i.parent.name ?
-                                    `${i.name} (${i.parent.name})` :
-                                    i.name;
+                    // ------------------------------
+                    // SELECT LOCALITĂȚI
+                    // ------------------------------
+                    let options = '<option value="">Alege localitatea...</option>';
 
-                                options += `<option value="${label}">${label}</option>`;
-                            });
-                        };
+                    const add = (items) => {
+                        items.forEach(i => {
+                            const label = i.parent && i.name !== i.parent.name ?
+                                `${i.name} (${i.parent.name})` :
+                                i.name;
 
-                        add(groups.municipii);
-                        add(groups.sectoare);
-                        add(groups.orase);
-                        add(groups.comune);
-                        add(groups.sate);
-
-                        return options;
+                            options += `<option value="${label}">${label}</option>`;
+                        });
                     };
 
-                    localitySelect.innerHTML = buildSelectOptions();
+                    add(data.municipii);
+                    add(data.sectoare);
+                    add(data.orase);
+                    add(data.comune);
+                    add(data.sate);
+
+                    localitySelect.innerHTML = options;
 
                     // ------------------------------
-                    // Generăm tabelele
+                    // TABLE RENDER
                     // ------------------------------
                     const renderTable = (title, items) => `
-                    <h2 class="text-xl font-bold mt-6 mb-2">${title}</h2>
-                    <table class="w-full border text-left mb-4">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="p-2 border w-20">SIRUTA</th>
-                                <th class="p-2 border">Nume</th>
-                                <th class="p-2 border w-40 text-center">Cod poștal</th>
-                                <th class="p-2 border w-20 text-center">Maps</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${items.map(i => `
-                                                        <tr>
-                                                            <td class="p-2 border">${i.siruta_code}</td>
-                                                            <td class="p-2 border">
-                                                                ${i.name}
-                                                                ${i.parent && i.name !== i.parent.name
-                                                                    ? ` <span class="text-gray-500 text-sm">(${i.parent.name})</span>`
-                                                                    : ''
-                                                                }
-                                                            </td>
-                                                            <td class="p-2 border text-center">
-                                                                ${i.postal_code && i.postal_code !== "000000" ? i.postal_code : "-"}
-                                                            </td>
-                                                            <td class="p-2 border text-center">
-                                                                ${i.lat && i.lng
-                                                                    ? `<a href="https://www.google.com/maps?q=${i.lat},${i.lng}" target="_blank" class="text-blue-600">📍</a>`
-                                                                    : `-`
-                                                                }
-                                                            </td>
-                                                        </tr>
-                                                    `).join('')}
-                        </tbody>
-                    </table>
-                `;
+                <h2 class="text-xl font-bold mt-6 mb-2">${title}</h2>
+                <table class="w-full border text-left mb-4">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="p-2 border w-20">SIRUTA</th>
+                            <th class="p-2 border">Nume</th>
+                            <th class="p-2 border w-40 text-center">Cod poștal</th>
+                            <th class="p-2 border w-20 text-center">Maps</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${items.map(i => `
+                                <tr>
+                                    <td class="p-2 border">${i.siruta_code}</td>
+                                    <td class="p-2 border">
+                                        ${i.name}
+                                        ${i.parent && i.name !== i.parent.name
+                                            ? ` <span class="text-gray-500 text-sm">(${i.parent.name})</span>`
+                                            : ''
+                                        }
+                                    </td>
+                                    <td class="p-2 border text-center">
+                                        ${i.postal_code && i.postal_code !== "000000" ? i.postal_code : "-"}
+                                    </td>
+                                    <td class="p-2 border text-center">
+                                        ${i.lat && i.lng
+                                            ? `<a href="https://www.google.com/maps?q=${i.lat},${i.lng}" target="_blank">📍</a>`
+                                            : '-'
+                                        }
+                                    </td>
+                                </tr>
+                            `).join('')}
+                    </tbody>
+                </table>
+            `;
 
-                    let html = "";
-                    html += renderTable("Municipii", groups.municipii);
-                    html += renderTable("Sectoare", groups.sectoare);
-                    html += renderTable("Orașe", groups.orase);
-                    html += renderTable("Comune", groups.comune);
-                    html += renderTable("Sate", groups.sate);
+                    let html = '';
+                    html += renderTable("Municipii", data.municipii);
+                    html += renderTable("Sectoare", data.sectoare);
+                    html += renderTable("Orașe", data.orase);
+                    html += renderTable("Comune", data.comune);
+                    html += renderTable("Sate", data.sate);
 
                     contentDiv.innerHTML = html;
                 });
         }
+
 
         // ------------------------------
         // 3. SCHIMBARE JUDEȚ
