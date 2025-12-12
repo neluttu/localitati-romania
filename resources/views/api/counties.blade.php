@@ -20,7 +20,7 @@
     </div>
 
     <script>
-        fetch('/api/v1/counties')
+        fetch('/v1/counties')
             .then(res => res.json())
             .then(data => {
                 let html = '';
@@ -34,7 +34,7 @@
                     <td class="p-2 border">${c.code}</td>
                     <td class="p-2 border">${c.siruta_code}</td>
                     <td class="p-2 border">
-                        <a class="text-blue-600 underline" href="/view/counties/${c.abbr}/localities-grouped">Localități</a>
+                        <a class="text-blue-600 underline" href="/view/counties/${c.abbr}/localities">Localități</a>
                     </td>
                 </tr>
             `;

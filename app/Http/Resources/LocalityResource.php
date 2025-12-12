@@ -9,20 +9,16 @@ class LocalityResource extends JsonResource
     public function toArray($request): array
     {
         return [
-            'id' => $this->id,
-            'siruta_code' => $this->siruta_code,
-            'parent' => $this->parent ? [
-                'name' => $this->parent->name,
-                'type' => $this->parent->type,
-                'siruta_code' => $this->parent->siruta_code,
-            ] : null,
-            'display_name' => $this->display_name,
-            'name' => $this->display_name,
-            'name_ascii' => $this->name_ascii,
-            'type' => $this->type,
-            'postal_code' => $this->postal_code,
-            'lat' => $this->lat,
-            'lng' => $this->lng,
+            'id' => $this['id'],
+            'siruta_code' => $this['siruta_code'],
+            'parent' => $this['parent'],
+            'display_name' => $this['display_name'],
+            'name' => $this['display_name'],
+            'name_ascii' => $this['name_ascii'],
+            'type' => $this['type'],
+            'postal_code' => $this['postal_code'],
+            'lat' => $this['lat'],
+            'lng' => $this['lng'],
         ];
     }
 
@@ -32,3 +28,4 @@ class LocalityResource extends JsonResource
     }
 
 }
+

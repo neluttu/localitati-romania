@@ -22,21 +22,20 @@ class CountyController extends Controller
     public function index(): AnonymousResourceCollection
     {
         return CountyResource::collection(
-            $this->countyService->all()
+            resource: $this->countyService->all()
         );
     }
 
-    public function localities(County $county): AnonymousResourceCollection
+    public function localities(County $county): JsonResponse
     {
-        return LocalityResource::collection(
-            $this->localityService->getByCounty($county)
-        );
-    }
+        $groups = $this->localityService->getGroupedByCounty($county);
 
-    public function localitiesGrouped(County $county): JsonResponse
-    {
-        return response()->json(
-            $this->localityService->getGroupedByCounty($county)
-        );
+        return response()->json([
+            'municipii' => LocalityResource::collection($groups['municipii']),
+            'orase' => LocalityResource::collection($groups['orase']),
+            'comune' => LocalityResource::collection($groups['comune']),
+            'sate' => LocalityResource::collection($groups['sate']),
+            'sectoare' => LocalityResource::collection($groups['sectoare']),
+        ]);
     }
 }

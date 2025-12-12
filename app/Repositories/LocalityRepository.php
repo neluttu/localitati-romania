@@ -6,23 +6,29 @@ namespace App\Repositories;
 use App\Models\County;
 use App\Models\Locality;
 use App\Enums\LocalityType;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 
 class LocalityRepository extends BaseRepository
 {
-    public function getByCounty(County $county)
+    public function byCounty(County $county): Collection
     {
-        return Cache::rememberForever("county_{$county->id}_localities", function () use ($county) {
-            return $county->localities()
-                ->with('parent')
-                ->ordered()
-                ->get();
-        });
+        $data = Cache::rememberForever(
+            "county_{$county->id}_localities",
+            function () use ($county) {
+                return $county->localities()
+                    ->ordered()
+                    ->get()
+                    ->toArray();
+            }
+        );
+
+        return collect($data);
     }
 
     public function getGroupedByCounty(County $county): array
     {
-        $localities = $this->getByCounty($county);
+        $localities = $this->ByCounty($county);
 
         return [
             'municipii' => $localities->whereIn('type', [
