@@ -21,7 +21,22 @@ Route::middleware(['api', Cors::class])
         Route::get('/counties/{county}/localities', [CountyController::class, 'localities']);
         // Route::get('/counties/{county}/localities-grouped', [CountyController::class, 'localitiesGrouped']);
     
+        Route::get('/health/cache', function () {
+            $key = 'health_check';
+
+            cache()->put($key, 'ok', 10);
+
+            return response()->json([
+                'API CACHE STATUS:' => '',
+                'cache_store' => config('cache.default'),
+                'cache_driver' => get_class(cache()->getStore()),
+                'cache_write' => cache()->has($key),
+                'cache_value' => cache()->get($key),
+                'timestamp' => now()->toDateTimeString(),
+            ]);
+        });
     });
+
 
 
 Route::fallback(function (): JsonResponse {
