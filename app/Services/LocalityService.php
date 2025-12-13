@@ -20,6 +20,14 @@ class LocalityService
         return $this->localities->ByCounty($county);
     }
 
+    public function getByCountyWithParent(County $county): Collection
+    {
+        return $this->attachParent(
+            $this->getByCounty($county)
+        );
+    }
+
+
     public function getGroupedByCounty(County $county): array
     {
         $localities = $this->attachParent(

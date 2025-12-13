@@ -12,59 +12,48 @@ class LocalityRepository extends BaseRepository
 {
     public function byCounty(County $county): Collection
     {
-        $localities = Cache::rememberForever(
-            "county_{$county->id}_localities",
-            function () use ($county): mixed {
-                return $county->localities()
-                    ->ordered()
-                    ->get()
-                    ->toArray();
-            }
+        return Cache::rememberForever(
+            "api:v1:county:{$county->abbr}:localities",
+            fn() => $county->localities()
+                ->ordered()
+                ->get()
+                ->map(fn($l) => $l->toArray())
         );
-
-        return collect($localities);
     }
 
-    public function getGroupedByCounty(County $county): array
+
+    protected function groupLocalities(Collection $localities): array
     {
-        $localities = $this->byCounty($county);
-
         return [
-            'municipii' => $localities->whereIn(
-                'type',
-                [
-                    LocalityType::MUNICIPIU_RESEDINTA,
-                    LocalityType::MUNICIPIU,
-                ]
-            )->values(),
+            'municipii' => $localities->whereIn('type', [
+                LocalityType::MUNICIPIU_RESEDINTA,
+                LocalityType::MUNICIPIU,
+            ])->values(),
 
-            'orase' => $localities->whereIn(
-                'type',
-                [
-                    LocalityType::ORAS,
-                    LocalityType::ORAS_RESEDINTA,
-                ]
-            )->values(),
+            'orase' => $localities->whereIn('type', [
+                LocalityType::ORAS,
+                LocalityType::ORAS_RESEDINTA,
+            ])->values(),
 
             'comune' => $localities->where(
                 'type',
                 LocalityType::COMUNA
-            )->values(),
+            )
+                ->values(),
 
-            'sate' => $localities->whereIn(
-                'type',
-                [
-                    LocalityType::SAT,
-                    LocalityType::SAT_RESEDINTA_COMUNA,
-                ]
-            )->values(),
+            'sate' => $localities->whereIn('type', [
+                LocalityType::SAT,
+                LocalityType::SAT_RESEDINTA_COMUNA,
+            ])->values(),
 
-            'sectoare' => $localities->whereIn(
-                'type',
-                [
-                    LocalityType::SECTOR,
-                ]
-            )->values(),
+            'sectoare' => $localities->where('type', LocalityType::SECTOR)->values(),
         ];
+    }
+
+    public function getGroupedByCounty(County $county): array
+    {
+        return $this->groupLocalities(
+            $this->byCounty($county)
+        );
     }
 }
