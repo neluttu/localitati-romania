@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\County;
+use Illuminate\Http\Request;
 use App\Services\CountyService;
 use App\Services\LocalityService;
 use Illuminate\Http\JsonResponse;
@@ -31,8 +32,43 @@ class CountyController extends Controller
         ]);
     }
 
-    public function localities(County $county): JsonResponse
+    public function show(string $county): JsonResponse
     {
+        $county = County::where('abbr', strtoupper($county))->firstOrFail();
+
+        return response()->json([
+            'data' => new CountyResource($county),
+            'meta' => [
+                'localities_endpoint' => "/v1/counties/" . strtolower($county->abbr) . "/localities",
+            ],
+        ]);
+    }
+
+    public function localities(County $county, Request $request): JsonResponse
+    {
+        // -------------------------------------------------
+        // 1. DACĂ EXISTĂ ?type → MOD FILTRAT
+        // -------------------------------------------------
+        if ($request->filled('type')) {
+            $type = strtoupper($request->query('type'));
+
+            // luăm toate localitățile din județ (flat, cu parent)
+            $localities = $this->localityService
+                ->getByCountyWithParent($county);
+
+            $filtered = $this->localityService
+                ->filterBySingleType($localities, $type);
+
+            return response()->json([
+                'data' => LocalityResource::collection($filtered),
+                'meta' => [
+                    'county' => new CountyResource($county),
+                    'type' => $type,
+                    'total' => $filtered->count(),
+                ],
+            ]);
+        }
+
         $cacheKey = "api:v1:counties:{$county->abbr}:localities";
 
         $groups = Cache::remember(

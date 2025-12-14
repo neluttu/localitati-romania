@@ -22,11 +22,11 @@ Route::middleware(['api', Cors::class])
         // Listă județe
         Route::get('/counties', [CountyController::class, 'index']);
 
-        // Detalii județ (AB, MS, CJ)
-        Route::get('/counties/{county}', [CountyController::class, 'show']);
-
         // Localități dintr-un județ (structurat)
         Route::get('/counties/{county}/localities', [CountyController::class, 'localities']);
+
+        // Detalii județ (AB, MS, CJ)
+        Route::get('/counties/{county}', [CountyController::class, 'show']);
 
         // Localități dintr-un județ – flat
         Route::get('/counties/{county}/localities/flat', [CountyController::class, 'localitiesFlat']);

@@ -32,6 +32,7 @@ enum LocalityType: int
             self::COMUNA => 'Comună',
             self::SAT_RESEDINTA_COMUNA => 'Sat reședință de comună',
             self::SAT => 'Sat',
+            self::SAT_APARTINATOR_MUNICIPIU => 'Sat aparținător de oraș',
             default => 'Localitate'
         };
     }
