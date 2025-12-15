@@ -25,8 +25,13 @@ enum LocalityType: int
     {
         return match ($this) {
             self::MUNICIPIU_RESEDINTA => 'Municipiu reședință de județ',
+            self::COMPONENTA_RESEDINTA_MUNICIPIU => 'Reședință municipiu',
             self::MUNICIPIU => 'Municipiu',
+            self::COMPONENTA_MUNICIPIU => 'Componentă municipiu',
             self::ORAS => 'Oraș',
+            self::COMPONENTA_ORAS => 'Componentă Oraș',
+            self::COMPONENTA_RESEDINTA_ORAS => 'Componentă reședință Oraș',
+            self::SAT_APARTINATOR_ORAS => 'Sat aparținător Oraș',
             self::SECTOR => 'Sector',
             self::ORAS_RESEDINTA => 'Oraș reședință de județ',
             self::COMUNA => 'Comună',

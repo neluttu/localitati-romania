@@ -54,98 +54,104 @@
 
             localitySelect.innerHTML = `<option>Loading...</option>`;
             contentDiv.innerHTML = `<p class="text-gray-600">Loading data...</p>`;
-
             fetch(`/v1/counties/${county}/localities`)
                 .then(res => res.json())
                 .then(response => {
 
-                    const data = response.data;
-                    const counts = response.meta.counts;
+                    const items = response.data;
 
                     // ------------------------------
-                    // COUNT (din meta, nu calculat)
+                    // COUNT SIMPLU
                     // ------------------------------
-                    const total =
-                        counts.municipii +
-                        counts.sectoare +
-                        counts.orase +
-                        counts.comune +
-                        counts.sate;
-
-                    countSpan.innerText = total;
-
+                    countSpan.innerText = items.length;
                     // ------------------------------
-                    // SELECT LOCALITĂȚI
+                    // SELECT LOCALITĂȚI (CU OPTGROUP)
                     // ------------------------------
                     let options = '<option value="">Alege localitatea...</option>';
 
-                    const add = (items) => {
-                        items.forEach(i => {
-                            const label = i.parent && i.name !== i.parent.name ?
-                                `${i.name} (${i.parent.name})` :
-                                i.name;
-
-                            options += `<option value="${label}">${label}</option>`;
-                        });
+                    const groups = {
+                        'Sector': [],
+                        'Oraș': [],
+                        'Localitate': [],
+                        'Municipiu': [],
+                        'Sat': [],
                     };
 
-                    add(data.municipii);
-                    add(data.sectoare);
-                    add(data.orase);
-                    add(data.comune);
-                    add(data.sate);
+                    const order = [
+                        'Municipiu',
+                        'Oraș',
+                        'Sector',
+                        'Sat',
+                        'Localitate',
+                    ];
+
+
+                    items.forEach(i => {
+                        const label = i.parent && i.name !== i.parent.name ?
+                            `${i.name} (${i.parent.name})` :
+                            i.name;
+
+                        const group = i.type_label || 'Localitate';
+
+                        if (!groups[group]) {
+                            groups[group] = [];
+                        }
+
+                        groups[group].push(`<option value="${label}">${label}</option>`);
+                    });
+
+                    order.forEach(group => {
+                        const opts = groups[group];
+                        if (opts && opts.length > 0) {
+                            options += `<optgroup label="${group}">${opts.join('')}</optgroup>`;
+                        }
+                    });
+
 
                     localitySelect.innerHTML = options;
 
                     // ------------------------------
-                    // TABLE RENDER
+                    // TABLE RENDER (SINGURĂ TABELĂ)
                     // ------------------------------
-                    const renderTable = (title, items) => `
-                <h2 class="text-xl font-bold mt-6 mb-2">${title}</h2>
-                <table class="w-full border text-left mb-4">
-                    <thead class="bg-gray-100">
-                        <tr>
-                            <th class="p-2 border w-20">SIRUTA</th>
-                            <th class="p-2 border">Nume</th>
-                            <th class="p-2 border w-40 text-center">Cod poștal</th>
-                            <th class="p-2 border w-20 text-center">Maps</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${items.map(i => `
-                                <tr>
-                                    <td class="p-2 border">${i.siruta_code}</td>
-                                    <td class="p-2 border">
-                                        ${i.name}
-                                        ${i.parent && i.name !== i.parent.name
-                                            ? ` <span class="text-gray-500 text-sm">(${i.parent.name})</span>`
-                                            : ''
-                                        }
-                                    </td>
-                                    <td class="p-2 border text-center">
-                                        ${i.postal_code && i.postal_code !== "000000" ? i.postal_code : "-"}
-                                    </td>
-                                    <td class="p-2 border text-center">
-                                        ${i.lat && i.lng
-                                            ? `<a href="https://www.google.com/maps?q=${i.lat},${i.lng}" target="_blank">📍</a>`
-                                            : '-'
-                                        }
-                                    </td>
-                                </tr>
-                            `).join('')}
-                    </tbody>
-                </table>
-            `;
+                    const renderTable = (items) => `
+            <table class="w-full border text-left mb-4">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th class="p-2 border w-20">SIRUTA</th>
+                        <th class="p-2 border">Localitate</th>
+                        <th class="p-2 border w-40 text-center">Cod poștal</th>
+                        <th class="p-2 border w-20 text-center">Maps</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${items.map(i => `
+                                                                    <tr>
+                                                                        <td class="p-2 border">${i.siruta_code}</td>
+                                                                        <td class="p-2 border">
+                                                                            ${i.name} (${i.type_label} - ${i.type})
+                                                                            ${i.parent && i.name !== i.parent.name
+                                                                                ? ` <span class="text-gray-500 text-sm">(${i.parent.name})</span>`
+                                                                                : ''
+                                                                            }
+                                                                        </td>
+                                                                        <td class="p-2 border text-center">
+                                                                            ${i.postal_code && i.postal_code !== "000000" ? i.postal_code : "-"}
+                                                                        </td>
+                                                                        <td class="p-2 border text-center">
+                                                                            ${i.lat && i.lng
+                                                                                ? `<a href="https://www.google.com/maps?q=${i.lat},${i.lng}" target="_blank">📍</a>`
+                                                                                : '-'
+                                                                            }
+                                                                        </td>
+                                                                    </tr>
+                                                                `).join('')}
+                </tbody>
+            </table>
+        `;
 
-                    let html = '';
-                    html += renderTable("Municipii", data.municipii);
-                    html += renderTable("Sectoare", data.sectoare);
-                    html += renderTable("Orașe", data.orase);
-                    html += renderTable("Comune", data.comune);
-                    html += renderTable("Sate", data.sate);
-
-                    contentDiv.innerHTML = html;
+                    contentDiv.innerHTML = renderTable(items);
                 });
+
         }
 
 

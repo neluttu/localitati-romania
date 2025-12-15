@@ -6,6 +6,7 @@ namespace App\Services;
 use App\Models\County;
 use App\Enums\LocalityType;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use App\Repositories\LocalityRepository;
 
 class LocalityService
@@ -30,9 +31,7 @@ class LocalityService
 
     public function getGroupedByCounty(County $county): array
     {
-        $localities = $this->attachParent(
-            $this->getByCounty($county)
-        );
+        $localities = $this->getByCounty($county);
 
         return [
             'municipii' => $localities->whereIn(
@@ -85,6 +84,48 @@ class LocalityService
         ];
     }
 
+    public function getCountyLocalities(County $county): Collection
+    {
+        $localities = $this->getByCountyWithParent($county);
+
+        return $localities
+            ->whereIn('type', [
+                    // municipii / orașe – componente locuibile
+                LocalityType::COMPONENTA_RESEDINTA_MUNICIPIU->value,
+                LocalityType::COMPONENTA_MUNICIPIU->value,
+                LocalityType::SAT_APARTINATOR_MUNICIPIU->value,
+
+                LocalityType::COMPONENTA_RESEDINTA_ORAS->value,
+                LocalityType::COMPONENTA_ORAS->value,
+                LocalityType::SAT_APARTINATOR_ORAS->value,
+
+                    // sate
+                LocalityType::SAT_RESEDINTA_COMUNA->value,
+                LocalityType::SAT->value,
+
+                    // București
+                LocalityType::SECTOR->value,
+            ])
+            ->values();
+    }
+
+    public function getCountyLocalitiesLite(County $county): Collection
+    {
+        return Cache::rememberForever(
+            "api:v1:county:{$county->abbr}:localities-lite",
+            fn(): Collection => $this->getCountyLocalities($county)
+                ->map(callback: fn($l): array => [
+                    'siruta_code' => $l['siruta_code'],
+                    'name' => $l['name'],
+                    'parent' => $l['parent']['name'] ?? null,
+                    'postal_code' => $l['postal_code'] !== '000000'
+                        ? $l['postal_code']
+                        : null,
+                ])
+        );
+    }
+
+
 
     private function attachParent(Collection $localities): Collection
     {
@@ -103,12 +144,6 @@ class LocalityService
 
                     $parentName = $this->cleanName($parent['name']);
 
-                    // 🔥 REGULA IMPORTANTĂ:
-                    // dacă localitatea are același nume ca părintele → o eliminăm
-                    if ($loc['display_name'] === $parentName) {
-                        return null;
-                    }
-
                     $loc['parent'] = [
                         'name' => $parentName,
                         'type' => $parent['type'],
@@ -120,7 +155,7 @@ class LocalityService
 
                 return $loc;
             })
-            ->filter()   // elimină null-urile (ex: Reghin componentă)
+            // ->filter()   // elimină null-urile (ex: Reghin componentă)
             ->values();
     }
 

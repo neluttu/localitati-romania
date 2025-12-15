@@ -51,7 +51,8 @@ class Locality extends Model
 
         return $query
             ->orderByRaw("FIELD(type, $order)")
-            ->orderBy('name');
+            ->orderBy('type');
+        // ->orderBy('name');
     }
 
 

@@ -3,10 +3,9 @@ declare(strict_types=1);
 
 namespace App\Http\Resources;
 
-use App\Enums\LocalityType;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class LocalityResource extends JsonResource
+class LocalitySelectResource extends JsonResource
 {
     public function toArray($request): array
     {
@@ -18,7 +17,6 @@ class LocalityResource extends JsonResource
             'name_ascii' => $this['name_ascii'],
 
             'type' => $this['type'],
-            'type_label' => LocalityType::from($this['type'])->label(),
             'postal_code' => $this['postal_code'] ?: null,
 
             'lat' => isset($this['lat']) ? (float) $this['lat'] : null,
@@ -33,10 +31,4 @@ class LocalityResource extends JsonResource
                 : null,
         ];
     }
-
-    private function cleanName($name): array|string|null
-    {
-        return preg_replace('/^(Municipiul|Municipiu|Orasul|Oras|Orașul|Oraș|Comuna|Satul)\s+/iu', '', $name);
-    }
-
 }

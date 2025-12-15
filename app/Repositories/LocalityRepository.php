@@ -12,13 +12,26 @@ class LocalityRepository extends BaseRepository
 {
     public function byCounty(County $county): Collection
     {
-        return Cache::rememberForever(
-            "api:v1:county:{$county->abbr}:localities",
-            fn() => $county->localities()
-                ->ordered()
-                ->get()
-                ->map(fn($l) => $l->toArray())
-        );
+        // return Cache::rememberForever(
+        //     "api:v1:county:{$county->abbr}:localities",
+        //     fn(): mixed => $county->localities()
+        //         ->ordered()
+        //         ->get()
+        //         ->map(function ($l) {
+        //             $arr = $l->toArray();
+        //             unset($arr['created_at'], $arr['updated_at']);
+        //             return $arr;
+        //         })
+        // );
+
+
+        return $county->localities()
+            ->ordered()
+            ->get()
+            ->map(fn($l) => collect($l->toArray())->except([
+                'created_at',
+                'updated_at',
+            ])->all());
     }
 
 

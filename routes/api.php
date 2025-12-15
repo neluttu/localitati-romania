@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\CountyController;
 use App\Http\Controllers\Api\LookupController;
 use App\Http\Controllers\Api\LocalityController;
+use App\Http\Controllers\Api\CountyLocalitiesController;
+use App\Http\Controllers\Api\CountyLocalitiesLiteController;
 
 
 // API public, fără autentificare
@@ -23,7 +25,14 @@ Route::middleware(['api', Cors::class])
         Route::get('/counties', [CountyController::class, 'index']);
 
         // Localități dintr-un județ (structurat)
-        Route::get('/counties/{county}/localities', [CountyController::class, 'localities']);
+        // Route::get('/counties/{county}/localities', [CountyController::class, 'localities']);
+        Route::get('/counties/{county}/localities', [CountyLocalitiesController::class, 'index']);
+
+        Route::get(
+            '/counties/{county}/localities-lite',
+            [CountyLocalitiesLiteController::class, 'index']
+        );
+
 
         // Detalii județ (AB, MS, CJ)
         Route::get('/counties/{county}', [CountyController::class, 'show']);
