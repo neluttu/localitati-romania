@@ -70,20 +70,17 @@
                     let options = '<option value="">Alege localitatea...</option>';
 
                     const groups = {
-                        'Sector': [],
-                        'Oraș': [],
-                        'Localitate': [],
-                        'Municipiu': [],
-                        'Sat': [],
+                        'localitati': [],
+                        'sate': [],
+                        'sectoare': [],
                     };
 
                     const order = [
-                        'Municipiu',
-                        'Oraș',
-                        'Sector',
-                        'Sat',
-                        'Localitate',
+                        'localitati',
+                        'sate',
+                        'sectoare',
                     ];
+
 
 
                     items.forEach(i => {
@@ -91,7 +88,7 @@
                             `${i.name} (${i.parent.name})` :
                             i.name;
 
-                        const group = i.type_label || 'Localitate';
+                        const group = i.type_group;
 
                         if (!groups[group]) {
                             groups[group] = [];
@@ -103,7 +100,8 @@
                     order.forEach(group => {
                         const opts = groups[group];
                         if (opts && opts.length > 0) {
-                            options += `<optgroup label="${group}">${opts.join('')}</optgroup>`;
+                            options +=
+                                `<optgroup label="${group}" class="capitalize">${opts.join('')}</optgroup>`;
                         }
                     });
 
@@ -125,26 +123,26 @@
                 </thead>
                 <tbody>
                     ${items.map(i => `
-                                                                    <tr>
-                                                                        <td class="p-2 border">${i.siruta_code}</td>
-                                                                        <td class="p-2 border">
-                                                                            ${i.name} (${i.type_label} - ${i.type})
-                                                                            ${i.parent && i.name !== i.parent.name
-                                                                                ? ` <span class="text-gray-500 text-sm">(${i.parent.name})</span>`
-                                                                                : ''
-                                                                            }
-                                                                        </td>
-                                                                        <td class="p-2 border text-center">
-                                                                            ${i.postal_code && i.postal_code !== "000000" ? i.postal_code : "-"}
-                                                                        </td>
-                                                                        <td class="p-2 border text-center">
-                                                                            ${i.lat && i.lng
-                                                                                ? `<a href="https://www.google.com/maps?q=${i.lat},${i.lng}" target="_blank">📍</a>`
-                                                                                : '-'
-                                                                            }
-                                                                        </td>
-                                                                    </tr>
-                                                                `).join('')}
+                                        <tr>
+                                            <td class="p-2 border">${i.siruta_code}</td>
+                                            <td class="p-2 border">
+                                                ${i.name} (${i.type_label} - ${i.type})
+                                                ${i.parent && i.name !== i.parent.name
+                                                    ? ` <span class="text-gray-500 text-sm">(${i.parent.name})</span>`
+                                                    : ''
+                                                }
+                                            </td>
+                                            <td class="p-2 border text-center">
+                                                ${i.postal_code && i.postal_code !== "000000" ? i.postal_code : "-"}
+                                            </td>
+                                            <td class="p-2 border text-center">
+                                                ${i.lat && i.lng
+                                                    ? `<a href="https://www.google.com/maps?q=${i.lat},${i.lng}" target="_blank">📍</a>`
+                                                    : '-'
+                                                }
+                                            </td>
+                                        </tr>
+                                    `).join('')}
                 </tbody>
             </table>
         `;

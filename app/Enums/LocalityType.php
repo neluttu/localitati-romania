@@ -45,21 +45,31 @@ enum LocalityType: int
     public function group(): string
     {
         return match ($this) {
-            self::MUNICIPIU_RESEDINTA,
-            self::MUNICIPIU => 'municipii',
 
-            self::ORAS,
-            self::ORAS_RESEDINTA => 'orase',
+            self::COMPONENTA_RESEDINTA_MUNICIPIU,
+            self::COMPONENTA_MUNICIPIU,
+            self::SAT_APARTINATOR_MUNICIPIU,
+            self::COMPONENTA_RESEDINTA_ORAS,
+            self::COMPONENTA_ORAS,
+            self::SAT_APARTINATOR_ORAS
+            => 'localitati',
 
-            self::COMUNA => 'comune',
-
+                // sate
             self::SAT_RESEDINTA_COMUNA,
-            self::SAT => 'sate',
-            self::SECTOR => 'sectoare',
+            self::SAT
+            => 'sate',
 
-            default => 'altele'
+                // București
+            self::SECTOR
+            => 'sectoroare',
+
+            // =========================
+            // FALLBACK (nu ar trebui să apară)
+            // =========================
+            default => 'Altele',
         };
     }
+
 
     public function sortOrder(): int
     {

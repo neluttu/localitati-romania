@@ -19,6 +19,7 @@ class LocalityResource extends JsonResource
 
             'type' => $this['type'],
             'type_label' => LocalityType::from($this['type'])->label(),
+            'type_group' => LocalityType::from($this['type'])->group(),
             'postal_code' => $this['postal_code'] ?: null,
 
             'lat' => isset($this['lat']) ? (float) $this['lat'] : null,
