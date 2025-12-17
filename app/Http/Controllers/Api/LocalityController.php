@@ -1,8 +1,7 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
-use JsonException;
 use App\Models\County;
 use Illuminate\Http\Request;
 use App\Services\LocalityService;
@@ -10,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LocalityResource;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Http\Resources\Json\JsonResource;
+
 
 class LocalityController extends Controller
 {

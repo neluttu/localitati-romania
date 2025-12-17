@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-
 namespace App\Repositories;
 
 use App\Models\County;
@@ -12,27 +11,40 @@ class LocalityRepository extends BaseRepository
 {
     public function byCounty(County $county): Collection
     {
-        return Cache::rememberForever(
+        $data = Cache::rememberForever(
             "api:v1:county:{$county->abbr}:localities",
             fn(): mixed => $county->localities()
                 ->ordered()
                 ->get()
-                ->map(function ($l) {
-                    $arr = $l->toArray();
-                    unset($arr['created_at'], $arr['updated_at']);
-                    return $arr;
-                })
+                ->map(fn($l): array => [
+                    'id' => (int) $l->id,
+
+                    // SIRUTA
+                    'siruta_code' => (int) $l->siruta_code,
+                    'siruta_parent' => $l->siruta_parent
+                        ? (int) $l->siruta_parent
+                        : null,
+
+                    // names
+                    'display_name' => $l->display_name,
+                    'name_ascii' => $l->name_ascii,
+
+                    // type (ENUM → int)
+                    'type' => $l->type instanceof LocalityType
+                        ? $l->type->value
+                        : (int) $l->type,
+
+                    // extra (primitive only)
+                    'postal_code' => $l->postal_code,
+                    'lat' => $l->lat !== null ? (float) $l->lat : null,
+                    'lng' => $l->lng !== null ? (float) $l->lng : null,
+                ])
+                ->all()
         );
 
-
-        // return $county->localities()
-        //     ->ordered()
-        //     ->get()
-        //     ->map(fn($l) => collect($l->toArray())->except([
-        //         'created_at',
-        //         'updated_at',
-        //     ])->all());
+        return collect($data);
     }
+
 
 
     protected function groupLocalities(Collection $localities): array

@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-
 namespace App\Services;
 
 use App\Models\County;
@@ -16,11 +15,13 @@ class LocalityService
     ) {
     }
 
+    // ========== FETCH ==========
     public function getByCounty(County $county): Collection
     {
         return $this->localities->ByCounty($county);
     }
 
+    // ========== ENRICH ==========
     public function getByCountyWithParent(County $county): Collection
     {
         return $this->attachParent(
@@ -31,7 +32,7 @@ class LocalityService
 
     public function getGroupedByCounty(County $county): array
     {
-        $localities = $this->getByCounty($county);
+        $localities = $this->getByCountyWithParent($county);
 
         return [
             'municipii' => $localities->whereIn(
@@ -114,21 +115,15 @@ class LocalityService
         return Cache::rememberForever(
             "api:v1:county:{$county->abbr}:localities-lite",
             fn(): Collection => $this->getCountyLocalities($county)
-                ->map(callback: fn($l): array => [
-                    'id' => (int) $l['id'],
+                ->map(fn($l): array => [
+                    'id' => (int) $l['id'], // ✅ adăugat
                     'siruta_code' => (int) $l['siruta_code'],
-                    'name' => $l['name'],
-                    'name_ascii' => $l['name_ascii'],
-
-                    'parent' => $l['parent']['name'] ?? null,
-
-                    'postal_code' => $l['postal_code'] !== '000000'
-                        ? $l['postal_code']
-                        : null,
+                    'name' => $l['display_name'],
+                    'name_ascii' => $l['name_ascii'], // dacă Resource îl cere
+                    'postal_code' => $l['postal_code'] !== '000000' ? $l['postal_code'] : null,
                 ])
         );
     }
-
 
 
     private function attachParent(Collection $localities): Collection
@@ -137,8 +132,9 @@ class LocalityService
 
         return $localities
             ->map(function ($loc) use ($index) {
-                // display_name mereu
-                $loc['display_name'] = $this->cleanName($loc['name']);
+
+                $loc['display_name'] = $loc['display_name']
+                    ?? $this->cleanName($loc['display_name'] ?? '');
 
                 if (
                     !empty($loc['siruta_parent']) &&
@@ -146,12 +142,10 @@ class LocalityService
                 ) {
                     $parent = $index[$loc['siruta_parent']];
 
-                    $parentName = $this->cleanName($parent['name']);
-
                     $loc['parent'] = [
-                        'name' => $parentName,
-                        'type' => $parent['type'],
-                        'siruta_code' => $parent['siruta_code'],
+                        'siruta_code' => (int) $parent['siruta_code'],
+                        'name' => $parent['display_name'],
+                        'type' => (int) $parent['type'],
                     ];
                 } else {
                     $loc['parent'] = null;
@@ -159,9 +153,9 @@ class LocalityService
 
                 return $loc;
             })
-            // ->filter()   // elimină null-urile (ex: Reghin componentă)
             ->values();
     }
+
 
 
     private function cleanName(string $name): string

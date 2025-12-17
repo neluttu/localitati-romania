@@ -18,8 +18,17 @@ class CountyService
         return $this->counties->all();
     }
 
-    public function resolve(string $county): County
+    public function resolve(string $county): array
+    {
+        return $this->counties
+            ->all()
+            ->firstWhere('abbr', strtoupper($county))
+            ?? abort(404, 'County not found');
+    }
+
+    public function resolveModel(string $county): County
     {
         return $this->counties->findByIdOrAbbr($county);
     }
+
 }

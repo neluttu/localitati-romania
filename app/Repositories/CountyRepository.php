@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-
 namespace App\Repositories;
 
 use App\Models\County;
@@ -14,11 +13,20 @@ class CountyRepository extends BaseRepository
         $data = Cache::rememberForever('counties.all', function (): mixed {
             return County::orderBy('name')
                 ->get()
-                ->toArray();
+                ->map(fn($c): array => [
+                    'id' => $c->id,
+                    'siruta_code' => $c->siruta_code,
+                    'name' => $c->name,
+                    'name_ascii' => $c->name_ascii,
+                    'abbr' => $c->abbr,
+                    'region' => (int) $c->region->value,
+                ])
+                ->all();
         });
 
         return collect($data);
     }
+
 
     public function findByIdOrAbbr(string $value): County
     {

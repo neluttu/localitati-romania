@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\LookupController;
 use App\Http\Controllers\Api\LocalityController;
 use App\Http\Controllers\Api\CountyLocalitiesController;
 use App\Http\Controllers\Api\CountyLocalitiesLiteController;
+use App\Http\Controllers\Api\CountyLocalitiesGroupedController;
 
 
 // API public, fără autentificare
@@ -28,10 +29,8 @@ Route::middleware(['api', Cors::class])
         // Route::get('/counties/{county}/localities', [CountyController::class, 'localities']);
         Route::get('/counties/{county}/localities', [CountyLocalitiesController::class, 'index'])->name('api.localities');
 
-        Route::get(
-            '/counties/{county}/localities-lite',
-            [CountyLocalitiesLiteController::class, 'index']
-        )->name('api.localities-lite');
+        Route::get('/counties/{county}/localities/lite', [CountyLocalitiesLiteController::class, 'index'])->name('api.localities.lite');
+        Route::get('/counties/{county}/localities/grouped', [CountyLocalitiesGroupedController::class, 'index'])->name('api.localities.grouped');
 
 
         // Detalii județ (AB, MS, CJ)

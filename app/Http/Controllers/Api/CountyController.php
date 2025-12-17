@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Models\County;
@@ -11,7 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 use App\Http\Resources\CountyResource;
 use App\Http\Resources\LocalityResource;
-use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+
 
 class CountyController extends Controller
 {
@@ -34,13 +34,15 @@ class CountyController extends Controller
 
     public function show(string $county): JsonResponse
     {
-        $county = County::where('abbr', strtoupper($county))->firstOrFail();
+        $countyModel = County::where('abbr', strtoupper($county))->firstOrFail();
+        $countyArray = $this->countyService->resolve($countyModel->abbr);
 
         return response()->json([
-            'data' => new CountyResource($county),
+            'data' => new CountyResource($countyArray),
             'meta' => [
-                'localities_endpoint' => route('api.localities', ['county' => strtolower($county->abbr)], false),
-                'localities_endpoint_lite' => route('api.localities-lite', ['county' => strtolower($county->abbr)], false),
+                'localities_endpoint' => route('api.localities', ['county' => strtolower($countyModel->abbr)], false),
+                'localities_endpoint_lite' => route('api.localities.lite', ['county' => strtolower($countyModel->abbr)], false),
+                'localities_endpoint_grouped' => route('api.localities.grouped', ['county' => strtolower($countyModel->abbr)], false),
             ],
         ]);
     }
@@ -60,10 +62,12 @@ class CountyController extends Controller
             $filtered = $this->localityService
                 ->filterBySingleType($localities, $type);
 
+            $countyArray = $this->countyService->resolve($county->abbr);
+
             return response()->json([
                 'data' => LocalityResource::collection($filtered),
                 'meta' => [
-                    'county' => new CountyResource($county),
+                    'county' => new CountyResource($countyArray),
                     'type' => $type,
                     'total' => $filtered->count(),
                 ],
@@ -85,6 +89,8 @@ class CountyController extends Controller
         $sate = $groups['sate'] ?? collect();
         $sectoare = $groups['sectoare'] ?? collect();
 
+        $countyArray = $this->countyService->resolve($county->abbr);
+
         return response()->json([
             'data' => [
                 'municipii' => LocalityResource::collection($municipii),
@@ -94,7 +100,7 @@ class CountyController extends Controller
                 'sectoare' => LocalityResource::collection($sectoare),
             ],
             'meta' => [
-                'county' => new CountyResource($county),
+                'county' => new CountyResource($countyArray),
                 'counts' => [
                     'municipii' => $municipii->count(),
                     'orase' => $orase->count(),
