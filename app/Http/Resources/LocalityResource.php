@@ -30,6 +30,7 @@ class LocalityResource extends JsonResource
                     'siruta_code' => (int) $this['parent']['siruta_code'],
                     'name' => $this['parent']['name'],
                     'type' => (int) $this['parent']['type'],
+                    'type_label' => LocalityType::from($this['parent']['type'])->label(),
                 ]
                 : null,
         ];

@@ -17,10 +17,10 @@ return new class extends Migration {
             $table->string('name_ascii')->index();
             $table->string('slug')->unique()->index();
             $table->string('abbr', 2)->default(null);
-            $table->unsignedTinyInteger('code'); // 1–42
-            $table->string('region')->nullable();
+            // $table->unsignedTinyInteger('code');
+            $table->unsignedTinyInteger('region');
             $table->timestamps();
-            $table->index('code');
+            // $table->index('code');
             $table->index('name');
             $table->index('abbr');
         });

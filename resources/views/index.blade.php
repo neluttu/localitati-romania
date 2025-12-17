@@ -13,160 +13,87 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
 
-    <body class="flex items-center  min-h-screen flex-col font-varela">
+    <body class="flex items-center  min-h-screen flex-col font-geist">
         <div class="flex items-center justify-center flex-col relative min-h-screen w-full">
             <div class="sticky top-8 flex items-center gap-3 z-20">
                 @include('partials.nav')
             </div>
             <div class="flex-1 w-full flex items-center justify-center flex-col relative">
                 <div class="w-full inset-0 absolute mx-auto -z-30"><x-svg.romania /></div>
-                <div class="text-center text-5xl font-normal p-10 bg-white/60  backdrop-blur-md w-full"
+                <div class="text-center text-5xl font-normal p-10 bg-white/80  backdrop-blur-md w-full  shadow-[0px_0px_48px_5px_rgba(204,204,204,0.35)]"
                     data-localities-api>
-                    <p>Date administrative reale pentru România</p>
+                    <p class="tracking-tight">Date administrative oficiale pentru România</p>
                     <div class="grid grid-cols-3 gap-6 max-w-5xl mt-8 mx-auto">
                         <select name="county" id="county"
-                            class="rounded-full border-none text-sm p-2 px-3 bg-[#002b7f] text-white">
+                            class="rounded-full border-none text-base p-2 px-3 bg-[#002b7f] text-white">
                             <option>- Alege un județ -</option>
-                            <option value="Alba" data-abbr="AB">
-                                Alba
-                            </option>
-                            <option value="Arad" data-abbr="AR">
-                                Arad
-                            </option>
-                            <option value="Argeș" data-abbr="AG">
-                                Argeș
-                            </option>
-                            <option value="Bacău" data-abbr="BC">
-                                Bacău
-                            </option>
-                            <option value="Bihor" data-abbr="BH">
-                                Bihor
-                            </option>
-                            <option value="Bistrița-Năsăud" data-abbr="BN">
-                                Bistrița-Năsăud
-                            </option>
-                            <option value="Botoșani" data-abbr="BT">
-                                Botoșani
-                            </option>
-                            <option value="Brăila" data-abbr="BR">
-                                Brăila
-                            </option>
-                            <option value="Brașov" data-abbr="BV">
-                                Brașov
-                            </option>
-                            <option value="București" data-abbr="B">
-                                București
-                            </option>
-                            <option value="Buzău" data-abbr="BZ">
-                                Buzău
-                            </option>
-                            <option value="Călărași" data-abbr="CL">
-                                Călărași
-                            </option>
-                            <option value="Caraș-Severin" data-abbr="CS">
-                                Caraș-Severin
-                            </option>
-                            <option value="Cluj" data-abbr="CJ">
-                                Cluj
-                            </option>
-                            <option value="Constanța" data-abbr="CT">
-                                Constanța
-                            </option>
-                            <option value="Covasna" data-abbr="CV">
-                                Covasna
-                            </option>
-                            <option value="Dâmbovița" data-abbr="DB">
-                                Dâmbovița
-                            </option>
-                            <option value="Dolj" data-abbr="DJ">
-                                Dolj
-                            </option>
-                            <option value="Galați" data-abbr="GL">
-                                Galați
-                            </option>
-                            <option value="Giurgiu" data-abbr="GR">
-                                Giurgiu
-                            </option>
-                            <option value="Gorj" data-abbr="GJ">
-                                Gorj
-                            </option>
-                            <option value="Harghita" data-abbr="HR">
-                                Harghita
-                            </option>
-                            <option value="Hunedoara" data-abbr="HD">
-                                Hunedoara
-                            </option>
-                            <option value="Ialomița" data-abbr="IL">
-                                Ialomița
-                            </option>
-                            <option value="Iași" data-abbr="IS">
-                                Iași
-                            </option>
-                            <option value="Ilfov" data-abbr="IF">
-                                Ilfov
-                            </option>
-                            <option value="Maramureș" data-abbr="MM">
-                                Maramureș
-                            </option>
-                            <option value="Mehedinți" data-abbr="MH">
-                                Mehedinți
-                            </option>
-                            <option value="Mureș" data-abbr="MS">
-                                Mureș
-                            </option>
-                            <option value="Neamț" data-abbr="NT">
-                                Neamț
-                            </option>
-                            <option value="Olt" data-abbr="OT">
-                                Olt
-                            </option>
-                            <option value="Prahova" data-abbr="PH">
-                                Prahova
-                            </option>
-                            <option value="Sălaj" data-abbr="SJ">
-                                Sălaj
-                            </option>
-                            <option value="Satu Mare" data-abbr="SM">
-                                Satu Mare
-                            </option>
-                            <option value="Sibiu" data-abbr="SB">
-                                Sibiu
-                            </option>
-                            <option value="Suceava" data-abbr="SV">
-                                Suceava
-                            </option>
-                            <option value="Teleorman" data-abbr="TR">
-                                Teleorman
-                            </option>
-                            <option value="Timiș" data-abbr="TM">
-                                Timiș
-                            </option>
-                            <option value="Tulcea" data-abbr="TL">
-                                Tulcea
-                            </option>
-                            <option value="Vâlcea" data-abbr="VL">
-                                Vâlcea
-                            </option>
-                            <option value="Vaslui" data-abbr="VS">
-                                Vaslui
-                            </option>
-                            <option value="Vrancea" data-abbr="VN">
-                                Vrancea
-                            </option>
-
-                        </select>
+                            <option value="Alba" data-abbr="AB">Alba</option>
+                            <option value="Arad" data-abbr="AR">Arad</option>
+                            <option value="Argeș" data-abbr="AG">Argeș</option>
+                            <option value="Bacău" data-abbr="BC">Bacău</option>
+                            <option value="Bihor" data-abbr="BH">Bihor</option>
+                            <option value="Bistrița-Năsăud" data-abbr="BN">Bistrița-Năsăud</option>
+                            <option value="Botoșani" data-abbr="BT">Botoșani</option>
+                            <option value="Brăila" data-abbr="BR">Brăila</option>
+                            <option value="Brașov" data-abbr="BV">Brașov</option>
+                            <option value="București" data-abbr="B">București</option>
+                            <option value="Buzău" data-abbr="BZ">Buzău</option>
+                            <option value="Călărași" data-abbr="CL">Călărași</option>
+                            <option value="Caraș-Severin" data-abbr="CS">Caraș-Severin</option>
+                            <option value="Cluj" data-abbr="CJ">Cluj</option>
+                            <option value="Constanța" data-abbr="CT">Constanța</option>
+                            <option value="Covasna" data-abbr="CV">Covasna</option>
+                            <option value="Dâmbovița" data-abbr="DB">Dâmbovița</option>
+                            <option value="Dolj" data-abbr="DJ">Dolj</option>
+                            <option value="Galați" data-abbr="GL">Galați</option>
+                            <option value="Giurgiu" data-abbr="GR">Giurgiu</option>
+                            <option value="Gorj" data-abbr="GJ">Gorj</option>
+                            <option value="Harghita" data-abbr="HR">Harghita</option>
+                            <option value="Hunedoara" data-abbr="HD">Hunedoara</option>
+                            <option value="Ialomița" data-abbr="IL">Ialomița</option>
+                            <option value="Iași" data-abbr="IS">Iași</option>
+                            <option value="Ilfov" data-abbr="IF">Ilfov</option>
+                            <option value="Maramureș" data-abbr="MM">Maramureș</option>
+                            <option value="Mehedinți" data-abbr="MH">Mehedinți</option>
+                            <option value="Mureș" data-abbr="MS">Mureș</option>
+                            <option value="Neamț" data-abbr="NT">Neamț</option>
+                            <option value="Olt" data-abbr="OT">Olt</option>
+                            <option value="Prahova" data-abbr="PH">Prahova</option>
+                            <option value="Sălaj" data-abbr="SJ">Sălaj</option>
+                            <option value="Satu Mare" data-abbr="SM">Satu Mare</option>
+                            <option value="Sibiu" data-abbr="SB">Sibiu</option>
+                            <option value="Suceava" data-abbr="SV">Suceava</option>
+                            <option value="Teleorman" data-abbr="TR">Teleorman</option>
+                            <option value="Timiș" data-abbr="TM">Timiș</option>
+                            <option value="Tulcea" data-abbr="TL">Tulcea</option>
+                            <option value="Vâlcea" data-abbr="VL">Vâlcea</option>
+                            <option value="Vaslui" data-abbr="VS">Vaslui</option>
+                            <option value="Vrancea" data-abbr="VN">Vrancea</option>
                         </select>
                         <select name="city" id="city"
-                            class="rounded-full border-none bg-[#fcd116] text-yellow-800 text-sm p-2 px-3">
+                            class="rounded-full border-none bg-[#fcd116] text-yellow-800 text-base p-2 px-3">
                             <option>- Alege orașul -</option>
                         </select>
                         <input name="postal_code" id="postal_code"
-                            class="rounded-full border-none bg-[#ce1126] text-white text-sm p-2 border-gray-300 px-3 placeholder:text-gray-200"
+                            class="rounded-full border-none bg-[#ce1126] text-white text-base p-2 border-gray-300 px-3 placeholder:text-gray-200"
                             placeholder="Cod poștal">
                     </div>
-                    <small class="text-sm pt-4 text-black/40">Versiune beta !! APP_ENV = local !!</small>
                 </div>
             </div>
+        </div>
+        <div class="container flex items-center justify-start gap-10 mt-10">
+            <div class="text-stone-500 text-lg grow ">
+                <h2 class="text-4xl pb-3 tracking-tight">
+                    Alege rapid
+                </h2>
+                <p>Select-uri pentru județ și localitate. Cu auto-complete sau fără, depinde de tine.</p>
+                <p class="pt-4">Date verificate pentru toate județele din România.</p>
+                <button
+                    class="rounded-full px-4 mt-10 text-base py-2 text-white bg-purple-500 cursor-pointer hover:bg-purple-600 transition-all duration-500 ease-in-out">
+                    Vezi documentația
+                </button>
+            </div>
+            <img src="{{ asset('storage/images/form.jpg') }}" class="max-w-4xl w-full">
         </div>
         <div class="space-y-3 my-10 container">
             <h1 class="text-xl">Set de date</h1>
@@ -180,7 +107,7 @@
             </p>
             <p class="text-gray-500">
                 Informațiile geospațiale (latitudine și longitudine) sunt obținute din seturi de date GeoJSON realizate
-                de <a href="geo-spatial.org" target="_blank" class="underline">geo-spatial.org</a>
+                de <a href="https://geo-spatial.org" target="_blank" class="underline">geo-spatial.org</a>
             </p>
         </div>
         <div class="my-10 w-full container">

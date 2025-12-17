@@ -25,6 +25,7 @@ class Locality extends Model
 
     protected $casts = [
         'type' => LocalityType::class,
+        'region' => DevelopmentRegion::class,
     ];
 
 

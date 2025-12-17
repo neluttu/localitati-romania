@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use App\Enums\DevelopmentRegion;
 
 class ImportSiruta extends Command
 {
@@ -97,14 +98,17 @@ class ImportSiruta extends Command
 
             $name = $this->normalizeCountyName($row[$col['denloc']] ?? '');
 
+            $abbr = $this->getCountyAbbr($name);
+
+            $region = DevelopmentRegion::fromCounty($abbr);
+
             $county = County::create([
                 'siruta_code' => $row[$col['siruta']],
                 'name' => ucfirst($name),
                 'name_ascii' => $this->toAscii($name),
                 'slug' => Str::slug($name),
-                'code' => $judCode,
-                'abbr' => $this->getCountyAbbr($name),
-                'region' => $row[$col['reg']] ?? null,
+                'abbr' => $abbr,
+                'region' => $region->value,
             ]);
 
             $countyIdByJud[$judCode] = $county->id;

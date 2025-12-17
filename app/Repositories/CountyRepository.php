@@ -11,7 +11,7 @@ class CountyRepository extends BaseRepository
 {
     public function all(): Collection
     {
-        $data = Cache::rememberForever('counties.all', function () {
+        $data = Cache::rememberForever('counties.all', function (): mixed {
             return County::orderBy('name')
                 ->get()
                 ->toArray();

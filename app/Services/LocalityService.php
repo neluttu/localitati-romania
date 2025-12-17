@@ -115,9 +115,13 @@ class LocalityService
             "api:v1:county:{$county->abbr}:localities-lite",
             fn(): Collection => $this->getCountyLocalities($county)
                 ->map(callback: fn($l): array => [
-                    'siruta_code' => $l['siruta_code'],
+                    'id' => (int) $l['id'],
+                    'siruta_code' => (int) $l['siruta_code'],
                     'name' => $l['name'],
+                    'name_ascii' => $l['name_ascii'],
+
                     'parent' => $l['parent']['name'] ?? null,
+
                     'postal_code' => $l['postal_code'] !== '000000'
                         ? $l['postal_code']
                         : null,

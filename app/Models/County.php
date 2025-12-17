@@ -2,6 +2,7 @@
 declare(strict_types=1);
 namespace App\Models;
 
+use App\Enums\DevelopmentRegion;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
@@ -12,6 +13,7 @@ class County extends Model
     protected $casts = [
         'siruta_code' => 'integer',
         'code' => 'integer',
+        'region' => DevelopmentRegion::class,
     ];
 
     protected $withCount = ['localities'];

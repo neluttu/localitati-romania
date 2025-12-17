@@ -6,6 +6,7 @@ use App\Models\County;
 use App\Services\LocalityService;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CountyResource;
 use App\Http\Resources\LocalityLiteResource;
 
 class CountyLocalitiesLiteController extends Controller
@@ -22,7 +23,7 @@ class CountyLocalitiesLiteController extends Controller
         return response()->json([
             'data' => LocalityLiteResource::collection($items),
             'meta' => [
-                'county' => $county->abbr,
+                'county' => new CountyResource($county),
                 'total' => $items->count(),
             ],
         ]);

@@ -39,7 +39,8 @@ class CountyController extends Controller
         return response()->json([
             'data' => new CountyResource($county),
             'meta' => [
-                'localities_endpoint' => "/v1/counties/" . strtolower($county->abbr) . "/localities",
+                'localities_endpoint' => route('api.localities', ['county' => strtolower($county->abbr)], false),
+                'localities_endpoint_lite' => route('api.localities-lite', ['county' => strtolower($county->abbr)], false),
             ],
         ]);
     }
