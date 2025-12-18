@@ -3,12 +3,12 @@
 use App\Http\Middleware\Cors;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\CountyController;
-use App\Http\Controllers\Api\LookupController;
-use App\Http\Controllers\Api\LocalityController;
-use App\Http\Controllers\Api\CountyLocalitiesController;
-use App\Http\Controllers\Api\CountyLocalitiesLiteController;
-use App\Http\Controllers\Api\CountyLocalitiesGroupedController;
+use App\Http\Controllers\Api\V1\CountyController;
+use App\Http\Controllers\Api\V1\LookupController;
+use App\Http\Controllers\Api\V1\LocalityController;
+use App\Http\Controllers\Api\V1\CountyLocalitiesController;
+use App\Http\Controllers\Api\V1\CountyLocalitiesLiteController;
+use App\Http\Controllers\Api\V1\CountyLocalitiesGroupedController;
 
 
 // API public, fără autentificare

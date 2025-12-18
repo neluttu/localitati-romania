@@ -19,7 +19,7 @@ class CountyRepository extends BaseRepository
                     'name' => $c->name,
                     'name_ascii' => $c->name_ascii,
                     'abbr' => $c->abbr,
-                    'region' => (int) $c->region->value,
+                    'region' => (int) $c->region?->value,
                 ])
                 ->all();
         });
