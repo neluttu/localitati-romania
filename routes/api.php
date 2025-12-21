@@ -32,7 +32,10 @@ Route::middleware(['api', Cors::class])
         Route::get('/counties/{county}/localities/lite', [CountyLocalitiesLiteController::class, 'index'])->name('api.localities.lite');
         Route::get('/counties/{county}/localities/grouped', [CountyLocalitiesGroupedController::class, 'index'])->name('api.localities.grouped');
 
-
+        // Route::get('/counties/{county}/localities/{locality}',[CountyLocalityController::class, 'show'])->name('api.localities.show');
+    
+        // Route::get('/counties/{county}/localities/type/{type}',[CountyLocalitiesByTypeController::class, 'index'])->name('api.localities.by-type');
+    
         // Detalii județ (AB, MS, CJ)
         Route::get('/counties/{county}', [CountyController::class, 'show']);
 

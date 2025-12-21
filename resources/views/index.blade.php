@@ -132,31 +132,40 @@
 {
   "data": [
     {
-      "id": 10761,
-      "siruta_code": 114328,
-      "name": "Târgu Mureș",
-      "name_ascii": "targu mures",
-      "type": 9,
-      "type_label": "Reședință municipiu",
-      "type_group": "localitati",
-      "postal_code": "540146",
-      "lat": 46.540227,
-      "lng": 24.558206,
+      "id": 10762,
+      "siruta_code": 114337,
+      "name": "Mureșeni",
+      "name_ascii": "mureseni",
+      "type": 10,
+      "type_label": "Componentă municipiu",
+      "type_group": "localități",
+      "postal_code": "540001",
+      "lat": 46.522996,
+      "lng": 24.520033,
       "parent": {
         "siruta_code": 114319,
         "name": "Târgu Mureș",
-        "type": 1
+        "type": 1,
+        "type_label": "Municipiu reședință de județ"
       }
     }
   ],
   "meta": {
     "county": {
-      "code": "MS",
-      "name": "Mureș"
+      "id": 28,
+      "siruta_code": 261,
+      "name": "Mureș",
+      "name_ascii": "mures",
+      "abbr": "MS"
+      "region": {
+        "id": 7,
+        "label": "Centru"
+      },
     },
     "total": 518
   }
 }
+
             </pre>
             <div class="bg-zinc-900 text-zinc-100 rounded-xl p-6 font-mono text-sm shadow-lg mt-16">
                 <div class="flex items-center gap-2 mb-4 text-xs text-zinc-400">
@@ -167,7 +176,7 @@
                 <div class="mb-3">
                     <span class="text-green-400">$</span>
                     <span class="text-blue-400">GET</span>
-                    <span class="text-zinc-200">https://api.siruta.ro/v1/counties/{abbr}/localities-lite</span>
+                    <span class="text-zinc-200">https://api.siruta.ro/v1/counties/{abbr}/localities/lite</span>
                 </div>
                 <p class="text-zinc-400">
                     Returnează lista completă de localități pentru un județ,
@@ -178,30 +187,29 @@
 {
   "data": [
     {
-      "siruta_code": 114328,
-      "name": "Târgu Mureș",
-      "type_label": "Municipii",
-      "postal_code": "540146",
-      "lat": 46.540227,
-      "lng": 24.558206
-    },
-    {
-      "siruta_code": 114827,
-      "name": "Apalina",
-      "type_label": "Sate",
-      "parent": {
-        "name": "Reghin"
-      }
+      "id": 10762,
+      "siruta_code": 114337,
+      "name": "Mureșeni",
+      "name_ascii": "mureseni",
+      "postal_code": "540001"
     }
   ],
   "meta": {
     "county": {
-      "code": "MS",
-      "name": "Mureș"
+      "id": 28,
+      "siruta_code": 261,
+      "name": "Mureș",
+      "name_ascii": "mures",
+      "abbr": "MS"
+      "region": {
+        "id": 7,
+        "label": "Centru"
+      },
     },
-    "total": 620
+    "total": 518
   }
 }
+
             </pre>
             <div class="bg-zinc-900 text-zinc-100 rounded-xl p-6 font-mono text-sm shadow-lg mt-16">
                 <div class="flex items-center gap-2 mb-4 text-xs text-zinc-400">
@@ -223,30 +231,21 @@
   "data": [
     {
       "id": 1,
+      "siruta_code": 10,
       "name": "Alba",
+      "name_ascii": "alba",
       "abbr": "AB",
-      "code": 10,
-      "region": "Centru"
+      "region": {
+        "id": 7,
+        "label": "Centru"
+      }
     },
-    {
-      "id": 28,
-      "name": "Mureș",
-      "abbr": "MS",
-      "code": 26,
-      "region": "Centru"
-    },
-    {
-      "id": 40,
-      "name": "Timiș",
-      "abbr": "TM",
-      "code": 35,
-      "region": "Vest"
-    }
   ],
   "meta": {
     "total": 42
   }
-}        
+}
+       
             </pre>
             <div class="my-10 w-full container">
                 <h2 class="text-xl pb-6">APP_ENV = local</h2>
