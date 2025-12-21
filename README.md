@@ -1,55 +1,122 @@
-# 🇷🇴 Localități România — API + Bază de date (SIRUTA 2025)
+# 🇷🇴 Localități România — API & Bază de date (SIRUTA 2025)
 
-Acesta este un proiect Laravel care oferă o bază de date completă a localităților din România,
-construită pe baza dataset-ului **SIRUTA 2025** (INS), îmbogățită cu coordonate geografice
-(latitudine / longitudine) din surse GEOJSON oficiale.
+Proiect **Laravel** care oferă o bază de date completă și un **API public** pentru județele și localitățile din România, construit pe baza dataset-ului oficial **SIRUTA 2025 (INS)** și îmbogățit cu coordonate geografice (latitudine / longitudine) din surse **GEOJSON oficiale**.
 
-Proiectul include:
+Gândit pentru aplicații reale: formulare de adresă, e-commerce, validări, livrări și aplicații administrative.
 
--   🟦 Lista județelor (cu coduri SIRUTA și abrevieri oficiale — AB, MS, CJ etc.)
--   🟩 Lista localităților din România (municipii, orașe, comune, sate)
--   📍 Coordonate geografice pentru majoritatea localităților (lat/lng)
--   🚀 API public pentru extragerea județelor și localităților
--   🔎 Căutare rapidă (ASCII normalized)
--   📦 Structură optimizată pentru utilizare în magazine online, formulare de adresă,
-    livrări, validări sau aplicații GIS.
+---
 
-## 🛠 Platformă și tehnologii
+## 📊 Date incluse
 
-Acest proiect este construit pe:
+-   🟦 Județe din România (coduri SIRUTA + abrevieri oficiale: AB, MS, CJ etc.)
+-   🟩 Localități: municipii, orașe, comune, sate
+-   📍 Coordonate geografice (lat / lng) pentru majoritatea localităților
+-   🔎 Căutare rapidă (nume normalizate ASCII)
+-   📦 Structură optimizată pentru utilizare în producție
+
+---
+
+## 🌐 API public
+
+### 1️⃣ Toate județele
+
+`GET /v1/counties`
+
+```json
+{
+    "data": [
+        { "code": "MS", "name": "Mureș" },
+        { "code": "CJ", "name": "Cluj" }
+    ]
+}
+```
+
+---
+
+### 2️⃣ Localități dintr-un județ (light – pentru formulare)
+
+`GET /v1/counties/{county}/localities/light`
+
+Exemplu:
+`/v1/counties/MS/localities/light`
+
+```json
+{
+    "data": [
+        {
+            "siruta_code": "114818",
+            "name": "Reghin",
+            "type": "municipiu",
+            "postal_code": "545300"
+        }
+    ]
+}
+```
+
+---
+
+### 3️⃣ Detalii complete pentru o localitate
+
+`GET /v1/counties/{county}/localities/{siruta}`
+
+Exemplu:
+`/v1/counties/MS/localities/114818`
+
+```json
+{
+    "data": {
+        "siruta_code": "114818",
+        "name": "Reghin",
+        "type": "municipiu",
+        "parent": "Mureș",
+        "postal_code": "545300",
+        "lat": 46.7749,
+        "lng": 24.7023
+    }
+}
+```
+
+---
+
+## 🛠 Platformă & tehnologii
 
 -   **Laravel 12.x**
 -   **PHP 8.2+**
--   **MySQL 8+** (sau MariaDB)
--   **TailwindCSS** (pentru vizualizarea datelor în frontend)
--   **CLI Artisan Commands** pentru importul SIRUTA și GEOJSON
+-   **MySQL 8+ / MariaDB**
+-   **TailwindCSS** (pentru vizualizare frontend)
+-   **Artisan CLI Commands** pentru import SIRUTA & GEOJSON
 
-## 🎯 Obiectivul proiectului
+---
 
-Scopul este să ofere o bază standardizată de localități din România,
-ușor de integrat în proiecte precum:
+## 📂 Structura proiectului
 
--   magazine online (checkout / formulare adresă)
+-   `database/migrations/` – tabele județe & localități
+-   `app/Console/Commands/` – importere SIRUTA + GEOJSON
+-   `app/Models/` – modele Eloquent optimizate
+-   `app/Http/Controllers/Api/` – endpoint-uri API
+-   `resources/views/api/` – explorare date în browser
+-   `storage/` – fișiere sursă CSV / GEOJSON
+
+---
+
+## 🎯 Scop
+
+O bază **standardizată, actualizată și ușor de integrat** pentru:
+
+-   magazine online (checkout / adresă)
 -   aplicații medicale sau administrative
--   sisteme de ticketing și livrare
+-   sisteme de livrare și ticketing
 -   aplicații GIS sau hărți interactive
 -   validarea adreselor introduse de utilizatori
 
-## 📂 Ce conține repo-ul?
+---
 
--   `migrations/` – structura completă a tabelelor pentru județe și localități
--   `app/Console/Commands/` – importere SIRUTA + GEOJSON
--   `app/Models/` – modele Eloquent optimizate (inclusiv sorting logic)
--   `app/Http/Controllers/Api/` – API pentru județe + localități
--   `resources/views/api/` – vizualizări tabelare pentru explorarea datelor
--   `storage/` – locația default pentru fișierele SIRUTA/GEOJSON
+## 🚦 Status
 
-## 🚦 Status proiect
+🔧 **În dezvoltare activă**  
+Importerele sunt funcționale, API-ul este stabil, iar documentația se extinde constant.
 
-🔧 **În dezvoltare activă.**  
-Importerele sunt funcționale, API-ul este stabil, iar view-urile sunt în curs de extindere.
-
-Documentația completă (instalare, endpoint-uri, exemple de răspuns) va fi adăugată ulterior.
+---
 
 ## © Licență
 
@@ -57,5 +124,4 @@ Urmează să fie definită (MIT recomandat pentru open-source).
 
 ---
 
-Dacă ai sugestii, contribuții sau vrei să folosești baza în proiectul tău,
-poți deschide un issue în acest repository.
+Build once. Use everywhere. 🇷🇴
