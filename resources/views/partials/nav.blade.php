@@ -9,9 +9,43 @@
         </svg>
         SIRUTA
     </a>
-    <a href="/" class="">Acasă</a>
-    <a href="/" class="">Docs</a>
-    <button class="p-1 bg-purple-500 text-white rounded-full px-3">
-        Exemple
-    </button>
+    <a href="/" class="transition-all duration-300 ease-in-out hover:text-purple-300">Docs</a>
+    <a href="{{ route('examples.index') }}"
+        class="transition-all duration-300 ease-in-out hover:text-purple-300">Exemple</a>
+    @guest
+        <a href="/login"
+            class="p-1 bg-purple-500 text-white rounded-full px-3 transition-all duration-300 ease-in-out hover:bg-purple-600 mr-0.5">
+            Cont
+        </a>
+    @endguest
+    @auth
+        <a href="/" class="transition-all duration-300 ease-in-out hover:text-purple-300">API Keys</a>
+        <a href="{{ route('account.index') }}" class="flex items-center gap-2">
+            <span>Salut, {{ auth()->user()->profile->first_name }}!</span>
+            <img src="{{ auth()->user()->profile->avatar_url }}" class="w-7 h-7 rounded-full" />
+        </a>
+    @endauth
+
+    @php
+        $link = route('login');
+
+        if (auth()->check()) {
+            $user = auth()->user();
+            if ($user->isAdmin()) {
+                $link = route('admin.dashboard');
+            } else {
+                $link = route('account.index');
+            }
+        }
+    @endphp
+
+    @auth
+        <form method="POST" action="{{ route('logout') }}" class="mr-1">
+            @csrf
+            <button class="text-purple-300">
+                @svg('heroicon-o-power', 'w-7 h-7 pt-1 stroke-2')
+            </button>
+        </form>
+    @endauth
+
 </nav>

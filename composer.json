@@ -7,8 +7,10 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "blade-ui-kit/blade-heroicons": "^2.6",
         "laravel/framework": "^12.0",
-        "laravel/sanctum": "^4.0",
+        "laravel/sanctum": "^4.2",
+        "laravel/socialite": "^5.24",
         "laravel/tinker": "^2.10.1",
         "league/csv": "^9.27",
         "phpoffice/phpspreadsheet": "^5.3"

@@ -5,3 +5,6 @@ if (document.querySelector("[data-localities-api]")) {
         module.localitiesApi();
     });
 }
+
+document.querySelector("[data-accordion]") &&
+    import("./accordion.js").then((m) => m.accordion());

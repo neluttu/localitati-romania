@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "@fontsource/varela-round";
 @import "@fontsource-variable/geist";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -14,4 +13,23 @@
 
     --font-varela: "Varela Round", sans-serif;
     --font-geist: "Geist Variable", sans-serif;
+
+    --color-primary-color: hsl(219.7, 100%, 24.9%);
+
+    --color-primary-blue: hsl(219.7, 100%, 24.9%);
+    --color-primary-yellow: hsl(48.8, 97.5%, 53.7%);
+    --color-primary-red: hsl(353.3, 84.8%, 43.7%);
+
+    --color-secondary-color: hsl(345 6% 13%);
+    --color-highlight-color: hsl(175.97, 79.68%, 36.67%);
+}
+
+@layer base {
+    button {
+        @apply cursor-pointer transition-all duration-300 ease-in-out;
+    }
+
+    label {
+        @apply cursor-pointer;
+    }
 }
