@@ -2,7 +2,10 @@ import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import fs from "node:fs";
-import path from "node:path";
+
+const sslKeyPath = "/var/www/_ssl/vite.key";
+const sslCertPath = "/var/www/_ssl/vite.crt";
+const useHttps = fs.existsSync(sslKeyPath) && fs.existsSync(sslCertPath);
 
 export default defineConfig({
     plugins: [
@@ -35,15 +38,19 @@ export default defineConfig({
     server: {
         host: "0.0.0.0",
         port: 5257,
-        https: {
-            key: fs.readFileSync("/var/www/_ssl/vite.key"),
-            cert: fs.readFileSync("/var/www/_ssl/vite.crt"),
-        },
-        origin: "https://localitati.devserver.ro",
+        https: useHttps
+            ? {
+                  key: fs.readFileSync(sslKeyPath),
+                  cert: fs.readFileSync(sslCertPath),
+              }
+            : false,
+        origin: useHttps ? "https://localitati.devserver.ro" : undefined,
 
         // HMR BEHIND REVERSE PROXY
-        hmr: {
-            clientPort: 443,
-        },
+        hmr: useHttps
+            ? {
+                  clientPort: 443,
+              }
+            : true,
     },
 });
