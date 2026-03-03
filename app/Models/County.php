@@ -1,13 +1,19 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\DevelopmentRegion;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class County extends Model
 {
+    /** @use HasFactory<\Database\Factories\CountyFactory> */
+    use HasFactory;
+
     protected $fillable = ['siruta_code', 'name', 'code', 'region', 'abbr', 'slug', 'name_ascii'];
 
     protected $casts = [
@@ -15,8 +21,6 @@ class County extends Model
         'code' => 'integer',
         'region' => DevelopmentRegion::class,
     ];
-
-    protected $withCount = ['localities'];
 
     public function localities(): HasMany
     {
@@ -28,4 +32,3 @@ class County extends Model
         return 'abbr';
     }
 }
-

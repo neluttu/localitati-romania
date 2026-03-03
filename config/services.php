@@ -47,5 +47,9 @@ return [
         'redirect' => env('FACEBOOK_REDIRECT_URI'),
     ],
 
+    'homepage' => [
+        'api_token' => env('HOMEPAGE_API_TOKEN'),
+        'api_url' => env('HOMEPAGE_API_URL', '/v1'),
+    ],
 
 ];

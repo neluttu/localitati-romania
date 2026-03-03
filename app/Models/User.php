@@ -1,22 +1,23 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Enums\UserRole;
-use App\Models\UserBillingProfile;
 use App\Notifications\VerifyEmailQueued;
-use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -59,7 +60,7 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
             'last_login_at' => 'datetime',
-            'role' => UserRole::class
+            'role' => UserRole::class,
         ];
     }
 
@@ -80,11 +81,11 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function fullName(): string
     {
-        if (!$this->profile) {
+        if (! $this->profile) {
             return '';
         }
 
-        return trim(($this->profile->first_name ?? '') . ' ' . ($this->profile->last_name ?? ''));
+        return trim(($this->profile->first_name ?? '').' '.($this->profile->last_name ?? ''));
     }
 
     public function markLogin(): void
@@ -103,7 +104,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function sendEmailVerificationNotification(): void
     {
-        $this->notify(new VerifyEmailQueued());
+        $this->notify(new VerifyEmailQueued);
     }
 
     public function billingProfiles(): HasMany
@@ -115,5 +116,10 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasOne(UserBillingProfile::class)
             ->where('is_default', true);
+    }
+
+    public function sites(): HasMany
+    {
+        return $this->hasMany(Site::class);
     }
 }

@@ -18,7 +18,7 @@ trait RedirectsUsers
     protected function redirectUser($user): RedirectResponse
     {
         // Email neconfirmat
-        if (!$user->hasVerifiedEmail()) {
+        if (! $user->hasVerifiedEmail()) {
             return redirect()->route('verification.notice');
         }
 
@@ -27,7 +27,7 @@ trait RedirectsUsers
             return redirect()->route('admin.dashboard');
         }
 
-        // Orice alt rol → Dashboard User
-        return redirect()->route('account.index');
+        // Orice alt rol → Dashboard Sites (API Keys)
+        return redirect()->route('dashboard.sites.index');
     }
 }

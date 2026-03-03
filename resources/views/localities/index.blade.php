@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto py-6">
+    <div class="max-w-7xl mx-auto px-4 py-6">
 
 
         <table class="w-full border-collapse border border-gray-300 text-sm">

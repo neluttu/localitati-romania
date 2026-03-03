@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "@fontsource-variable/geist": "^5.2.8",
-        "@fontsource/varela-round": "^5.2.8"
+        "@fontsource/varela-round": "^5.2.8",
+        "alpinejs": "^3.15.8"
     }
 }

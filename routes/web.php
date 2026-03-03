@@ -1,21 +1,24 @@
 <?php
 
-use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Account;
+use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminSiteController;
+use App\Http\Controllers\Admin\AdminStatsController;
+use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Auth;
 use App\Http\Controllers\Auth\SocialAuthController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Auth as Auth;
+use App\Http\Controllers\Dashboard\SiteController;
+use App\Http\Controllers\Dashboard\StatsController;
 use App\Http\Controllers\IndexController;
-use App\Http\Controllers\Account as Account;
-
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', [IndexController::class, 'index'])->name('index');
 
-Route::get('/view/counties', fn() => view('api.counties'));
-Route::get('/view/counties/{county}/localities', fn($county) => view('api.localities', ['county' => $county]));
-// Route::get('/view/counties/{county}/localities-grouped', fn($county) => view('api.localities-grouped', ['county' => $county]));
-
+Route::get('/view/counties', fn () => view('api.counties'));
+Route::get('/view/counties/{county}/localities', fn ($county) => view('api.localities', ['county' => $county]));
 
 Route::get('/exemple-api-judete-localitati', [IndexController::class, 'examples'])->name('examples.index');
+Route::get('/docs', fn () => view('docs.index'))->name('docs');
 
 Route::middleware('api')
     ->group(base_path('routes/api.php'));
@@ -50,7 +53,6 @@ Route::middleware('guest')->group(function (): void {
         ->name('social.callback');
 });
 
-
 // ===============================
 // Logged In Users
 // ===============================
@@ -74,18 +76,49 @@ Route::middleware(['auth'])->group(function (): void {
         ->group(function (): void {
 
             // ===============================
-            // USER ACCOUNT
+            // DASHBOARD - Sites, Stats, Profile
             // ===============================
-            Route::prefix('account')
-                ->name('account.')
-                ->group(function () {
+            Route::prefix('dashboard')
+                ->name('dashboard.')
+                ->group(function (): void {
 
-                Route::get('/', [Account\ProfileController::class, 'edit'])->name('index');
-                Route::get('/profile', [Account\ProfileController::class, 'edit'])->name('profile');
-                Route::put('/profile', [Account\ProfileController::class, 'update'])->name('profile.update');
-                Route::delete('/profil/avatar-delete', [Account\ProfileController::class, 'deleteAvatar'])->name('profile.avatar.delete');
-                Route::get('/billing', [Account\BillingController::class, 'edit'])->name('billing');
-                Route::put('/billing', [Account\BillingController::class, 'update'])->name('billing.update');
-            });
+                    // Sites (API Keys)
+                    Route::get('/', [SiteController::class, 'index'])->name('index');
+                    Route::get('/sites', [SiteController::class, 'index'])->name('sites.index');
+                    Route::get('/sites/create', [SiteController::class, 'create'])->name('sites.create');
+                    Route::post('/sites', [SiteController::class, 'store'])->name('sites.store');
+                    Route::get('/sites/{site}', [SiteController::class, 'show'])->name('sites.show');
+                    Route::post('/sites/{site}/regenerate', [SiteController::class, 'regenerateToken'])->name('sites.regenerate');
+                    Route::delete('/sites/{site}', [SiteController::class, 'destroy'])->name('sites.destroy');
+
+                    // Stats
+                    Route::get('/stats', [StatsController::class, 'index'])->name('stats.index');
+
+                    // Profile
+                    Route::get('/profile', [Account\ProfileController::class, 'edit'])->name('profile.edit');
+                    Route::put('/profile', [Account\ProfileController::class, 'update'])->name('profile.update');
+                    Route::delete('/profile/avatar', [Account\ProfileController::class, 'deleteAvatar'])->name('profile.avatar.delete');
+                });
+
+            // ===============================
+            // ADMIN Panel
+            // ===============================
+            Route::prefix('admin')
+                ->name('admin.')
+                ->middleware('role:admin')
+                ->group(function (): void {
+
+                    Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+
+                    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+                    Route::get('/users/{user}', [AdminUserController::class, 'show'])->name('users.show');
+                    Route::post('/users/{user}/toggle', [AdminUserController::class, 'toggleActive'])->name('users.toggle');
+
+                    Route::get('/sites', [AdminSiteController::class, 'index'])->name('sites.index');
+                    Route::get('/sites/{site}', [AdminSiteController::class, 'show'])->name('sites.show');
+                    Route::post('/sites/{site}/toggle', [AdminSiteController::class, 'toggleActive'])->name('sites.toggle');
+
+                    Route::get('/stats', [AdminStatsController::class, 'index'])->name('stats.index');
+                });
         });
 });

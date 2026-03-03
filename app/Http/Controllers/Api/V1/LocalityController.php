@@ -1,30 +1,29 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\County;
-use Illuminate\Http\Request;
-use App\Services\LocalityService;
-use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\LocalityResource;
+use App\Models\County;
+use App\Services\LocalityService;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-
 
 class LocalityController extends Controller
 {
-
     public function __construct(
         protected LocalityService $localityService
-    ) {
-    }
+    ) {}
 
     public function index(Request $request): JsonResponse
     {
 
         // ------------------------------
         // 0. Validare query params
-        // ------------------------------        
+        // ------------------------------
 
         $validator = Validator::make($request->query(), [
             'county' => ['required', 'string', 'size:2', 'exists:counties,abbr'],
@@ -38,15 +37,11 @@ class LocalityController extends Controller
         }
 
         // ------------------------------
-        // 1. Filtru COUNTY (opțional)
+        // 1. Fetch County & Localities
         // ------------------------------
-        if ($countyCode = $request->query('county')) {
-            $countyCode = strtoupper($request->query('county'));
-            $county = County::where('abbr', $countyCode)->first();
-            $localities = $this->localityService->getByCountyWithParent($county);
-        } else {
-            abort(400, 'county parameter is required');
-        }
+        $countyCode = strtoupper($request->query('county'));
+        $county = County::where('abbr', $countyCode)->firstOrFail();
+        $localities = $this->localityService->getByCountyWithParent($county);
 
         // ------------------------------
         // 2. Filtru TYPE (opțional)
@@ -62,8 +57,7 @@ class LocalityController extends Controller
             $search = mb_strtolower($search);
 
             $localities = $localities->filter(
-                fn($l) =>
-                str_contains($l['name_ascii'], $search)
+                fn ($l) => str_contains($l['name_ascii'], $search)
             )->values();
         }
 

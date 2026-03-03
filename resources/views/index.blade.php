@@ -65,21 +65,21 @@
             </div>
         </div>
     </div>
-    <div class="container flex items-center justify-start gap-10 mt-10">
+    <div class="max-w-7xl mx-auto px-4 flex items-center justify-start gap-10 mt-10">
         <div class="text-lg grow font-light">
             <h2 class="text-4xl pb-3 tracking-tight text-primary-blue">
                 Alege rapid
             </h2>
             <p>Select-uri pentru județ și localitate. Cu auto-complete sau fără, depinde de tine.</p>
             <p class="pt-4">Date verificate pentru toate județele din România.</p>
-            <button
-                class="rounded-full px-4 mt-10 text-base py-2 text-white bg-purple-500 cursor-pointer hover:bg-purple-600 transition-all duration-500 ease-in-out">
+            <a href="{{ route('docs') }}"
+                class="inline-block rounded-full px-4 mt-10 text-base py-2 text-white bg-purple-500 cursor-pointer hover:bg-purple-600 transition-all duration-500 ease-in-out">
                 Vezi documentația
-            </button>
+            </a>
         </div>
         <img src="{{ asset('storage/images/form.jpg') }}" class="max-w-4xl w-full">
     </div>
-    <div class="space-y-3 my-10 container">
+    <div class="space-y-3 my-10 max-w-7xl mx-auto px-4">
         <h1 class="text-xl">Set de date</h1>
         <p class="text-gray-500">
             Acest site utilizează date publice furnizate de Institutul Național de Statistică (INS), prin Sistemul
@@ -94,7 +94,7 @@
             de <a href="https://geo-spatial.org" target="_blank" class="underline">geo-spatial.org</a>
         </p>
     </div>
-    <div class="my-10 w-full container" data-accordion>
+    <div class="my-10 w-full max-w-7xl mx-auto px-4" data-accordion>
         <h2 class="text-xl pb-6">Endpoints</h2>
         <div class="flex items-start justify-start gap-10 flex-col w-full">
             <x-api-accordion method="GET" url="https://api.siruta.ro/v1/counties/MS/localities">

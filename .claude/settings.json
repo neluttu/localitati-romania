@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__laravel-boost__database-schema",
+      "Bash(php artisan make:migration create_sites_table --no-interaction)",
+      "Bash(php artisan make:migration create_api_logs_table --no-interaction)",
+      "Bash(php artisan make:model Site --factory --no-interaction)",
+      "Bash(php artisan make:model ApiLog --no-interaction)",
+      "Bash(php artisan make:resource UserResource --no-interaction)",
+      "Bash(php artisan make:resource SiteResource --no-interaction)",
+      "Bash(php artisan make:resource ApiLogResource --no-interaction)",
+      "Bash(php artisan make:policy SitePolicy --model=Site --no-interaction)",
+      "Bash(php artisan migrate --no-interaction)",
+      "Bash(vendor/bin/pint --dirty)",
+      "Bash(php artisan test --compact)",
+      "Bash(php artisan route:list --path=api/v1 --compact)",
+      "Bash(php artisan route:list --path=api/v1)",
+      "Bash(php artisan route:list --path=v1)",
+      "Bash(php artisan route:list --path=dashboard)",
+      "Bash(php artisan route:list --path=admin)",
+      "Bash(php artisan make:command PruneApiLogs --no-interaction)",
+      "Bash(php artisan make:migration make_domain_required_and_unique_on_sites_table --no-interaction)",
+      "Bash(php artisan make:middleware ValidateSiteToken --no-interaction)",
+      "Bash(php artisan config:clear)",
+      "Bash(npm run build)",
+      "mcp__laravel-boost__list-routes",
+      "Bash(npm install alpinejs)"
+    ]
+  }
+}

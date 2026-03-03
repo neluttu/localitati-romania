@@ -1,13 +1,15 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Http\Controllers\Account;
 
-use Illuminate\View\View;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\User\UserProfileRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
@@ -16,7 +18,10 @@ class ProfileController extends Controller
         $user = auth()->user();
         $profile = $user->profile; // relația hasOne
 
-        return view('account.profile', compact('user', 'profile'));
+        // Use dashboard view if accessing from dashboard routes
+        $view = request()->routeIs('dashboard.*') ? 'dashboard.profile.edit' : 'account.profile';
+
+        return view($view, compact('user', 'profile'));
     }
 
     public function update(UserProfileRequest $request): RedirectResponse
@@ -77,10 +82,11 @@ class ProfileController extends Controller
         $profile->update(['avatar' => $path]);
     }
 
-    private function isLocalAvatar(string $avatarPath = null): bool
+    private function isLocalAvatar(?string $avatarPath = null): bool
     {
-        if (!$avatarPath)
+        if (! $avatarPath) {
             return false;
+        }
 
         // local = începe cu "avatars/"
         return str_starts_with($avatarPath, 'avatars/');

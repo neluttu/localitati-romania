@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use App\Enums\LocalityType;
@@ -34,10 +36,4 @@ class LocalityResource extends JsonResource
                 : null,
         ];
     }
-
-    private function cleanName($name): array|string|null
-    {
-        return preg_replace('/^(Municipiul|Municipiu|Orasul|Oras|Orașul|Oraș|Comuna|Satul)\s+/iu', '', $name);
-    }
-
 }

@@ -6,6 +6,10 @@ export function localitiesApi() {
     const selectedCountyValue = countySelect?.dataset.selected || "";
     const selectedCity = citySelect?.dataset.selected || "";
 
+    // Get API token and URL from meta tags
+    const apiToken = document.querySelector('meta[name="api-token"]')?.content;
+    const apiUrl = document.querySelector('meta[name="api-url"]')?.content || "/v1";
+
     //
     // Helpers SELECT / INPUT
     //
@@ -85,7 +89,12 @@ export function localitiesApi() {
 
         citySelect.innerHTML += "<option>Încărcare localități...</option>";
 
-        fetch(`/v1/counties/${countyAbbr}/localities`)
+        fetch(`${apiUrl}/counties/${countyAbbr}/localities`, {
+            headers: {
+                "X-Site-Token": apiToken,
+                "Accept": "application/json",
+            },
+        })
             .then((res) => res.json())
             .then((response) => {
                 enableSelectMode();

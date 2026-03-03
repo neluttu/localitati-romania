@@ -1,18 +1,16 @@
 <?php
 
-use App\Http\Middleware\ApiAccessLog;
-use Illuminate\Foundation\Application;
 use App\Http\Middleware\ForceJsonResponse;
-use Illuminate\Http\Middleware\HandleCors;
+use App\Http\Middleware\RoleMiddleware;
+use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use App\Http\Middleware\RoleMiddleware;
-
+use Illuminate\Http\Middleware\HandleCors;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
-        web: __DIR__ . '/../routes/web.php',
-        commands: __DIR__ . '/../routes/console.php',
+        web: __DIR__.'/../routes/web.php',
+        commands: __DIR__.'/../routes/console.php',
         // api: __DIR__ . '/../routes/api.php',
         health: '/up',
     )
@@ -21,12 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))
             HandleCors::class,
             ForceJsonResponse::class,
             'throttle:120,1',
-            ApiAccessLog::class,
         ])->alias([
-                    'role' => RoleMiddleware::class,
-                ]);
+            'role' => RoleMiddleware::class,
+        ]);
 
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
-
-    })->create();
+    ->withExceptions(function (Exceptions $exceptions): void {})->create();
