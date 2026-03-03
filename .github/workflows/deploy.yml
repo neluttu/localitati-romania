@@ -169,8 +169,12 @@ jobs:
             **/.git*/**
             **/node_modules/**
             **/tests/**
+            .env
             **/.env
+            .env.example
             **/.env.example
+            .env.*
+            **/.env.*
             **/phpunit.xml
             **/vite.config.js
             **/package.json
@@ -179,3 +183,4 @@ jobs:
             **/*.md
             **/.editorconfig
             **/.github/**
+            .ftp-deploy-sync-state.json
