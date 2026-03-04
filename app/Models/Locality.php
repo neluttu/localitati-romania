@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Enums\LocalityType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -25,9 +26,12 @@ class Locality extends Model
 
     protected $appends = ['display_name'];
 
-    protected $casts = [
-        'type' => LocalityType::class,
-    ];
+    protected function casts(): array
+    {
+        return [
+            'type' => LocalityType::class,
+        ];
+    }
 
     public function county(): BelongsTo
     {
@@ -44,14 +48,17 @@ class Locality extends Model
         return $this->hasMany(Locality::class, 'siruta_parent', 'siruta_code');
     }
 
-    public function scopeOrdered($query): mixed
+    /**
+     * @param  Builder<Locality>  $query
+     * @return Builder<Locality>
+     */
+    public function scopeOrdered(Builder $query): Builder
     {
         $order = implode(',', LocalityType::orderList());
 
         return $query
             ->orderByRaw("FIELD(type, $order)")
             ->orderBy('type');
-        // ->orderBy('name');
     }
 
     public function getDisplayNameAttribute(): string

@@ -22,4 +22,6 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
-/.res
+/.respublic/php.php
+*.mp4
+*.zip

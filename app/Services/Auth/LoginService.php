@@ -12,7 +12,7 @@ class LoginService
     {
         $this->ensureIsNotRateLimited($data['email']);
 
-        if (!Auth::attempt(['email' => $data['email'], 'password' => $data['password']], $data['remember'] ?? false)) {
+        if (! Auth::attempt(['email' => $data['email'], 'password' => $data['password']], $data['remember'] ?? false)) {
             RateLimiter::hit($this->throttleKey($data['email']));
             throw ValidationException::withMessages([
                 'email' => 'Invalid credentials.',
@@ -21,22 +21,22 @@ class LoginService
 
         RateLimiter::clear($this->throttleKey($data['email']));
         session()->regenerate();
-        //Auth::user()->markLogin();
+        Auth::user()->markLogin();
     }
 
     private function ensureIsNotRateLimited(string $email): void
     {
-        if (!RateLimiter::tooManyAttempts($this->throttleKey($email), 5)) {
+        if (! RateLimiter::tooManyAttempts($this->throttleKey($email), 5)) {
             return;
         }
 
         throw ValidationException::withMessages([
-            'email' => 'Too many attempts. Try again in ' . RateLimiter::availableIn($this->throttleKey($email)) . ' seconds.',
+            'email' => 'Too many attempts. Try again in '.RateLimiter::availableIn($this->throttleKey($email)).' seconds.',
         ]);
     }
 
     private function throttleKey(string $email): string
     {
-        return 'login:' . strtolower($email);
+        return 'login:'.strtolower($email);
     }
 }

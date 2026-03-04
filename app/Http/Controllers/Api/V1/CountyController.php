@@ -1,29 +1,29 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Controller;
+use App\Http\Resources\CountyResource;
+use App\Http\Resources\LocalityResource;
 use App\Models\County;
-use Illuminate\Http\Request;
 use App\Services\CountyService;
 use App\Services\LocalityService;
 use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Cache;
-use App\Http\Resources\CountyResource;
-use App\Http\Resources\LocalityResource;
-
+use Illuminate\Http\Request;
 
 class CountyController extends Controller
 {
     public function __construct(
         protected CountyService $countyService,
         protected LocalityService $localityService
-    ) {
-    }
+    ) {}
 
     public function index(): JsonResponse
     {
         $counties = $this->countyService->all();
+
         return response()->json([
             'data' => CountyResource::collection($counties),
             'meta' => [
@@ -74,13 +74,7 @@ class CountyController extends Controller
             ]);
         }
 
-        $cacheKey = "api:v1:counties:{$county->abbr}:localities";
-
-        $groups = Cache::remember(
-            $cacheKey,
-            now()->addDays(90),
-            fn() => $this->localityService->getGroupedByCounty($county)
-        );
+        $groups = $this->localityService->getGroupedByCountyCached($county);
 
         // asigurăm existența cheilor
         $municipii = $groups['municipii'] ?? collect();

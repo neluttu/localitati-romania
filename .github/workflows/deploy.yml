@@ -184,3 +184,7 @@ jobs:
             **/.editorconfig
             **/.github/**
             .ftp-deploy-sync-state.json
+            storage/app/**
+            storage/logs/**
+            public/.well-known/**
+            public/LaravelLinkStorage.php

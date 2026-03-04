@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Enums;
 
 enum LocalityType: int
@@ -51,17 +53,14 @@ enum LocalityType: int
             self::SAT_APARTINATOR_MUNICIPIU,
             self::COMPONENTA_RESEDINTA_ORAS,
             self::COMPONENTA_ORAS,
-            self::SAT_APARTINATOR_ORAS
-            => 'localitati',
+            self::SAT_APARTINATOR_ORAS => 'localitati',
 
-                // sate
+            // sate
             self::SAT_RESEDINTA_COMUNA,
-            self::SAT
-            => 'sate',
+            self::SAT => 'sate',
 
-                // București
-            self::SECTOR
-            => 'sectoroare',
+            // București
+            self::SECTOR => 'sectoare',
 
             // =========================
             // FALLBACK (nu ar trebui să apară)
@@ -69,7 +68,6 @@ enum LocalityType: int
             default => 'Altele',
         };
     }
-
 
     public function sortOrder(): int
     {
@@ -99,6 +97,4 @@ enum LocalityType: int
             self::SECTOR->value,
         ];
     }
-
-
 }
