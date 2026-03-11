@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Events\SiteCreated;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Dashboard\SiteRequest;
 use App\Models\Site;
@@ -51,6 +52,8 @@ class SiteController extends Controller
             'domain' => $request->domain,
             'token' => Site::generateToken(),
         ]);
+
+        event(new SiteCreated($site));
 
         return redirect()
             ->route('dashboard.sites.show', $site)

@@ -12,7 +12,9 @@ class LoginService
     {
         $this->ensureIsNotRateLimited($data['email']);
 
-        if (! Auth::attempt(['email' => $data['email'], 'password' => $data['password']], $data['remember'] ?? false)) {
+        $remember = ! empty($data['remember']);
+
+        if (! Auth::attempt(['email' => $data['email'], 'password' => $data['password']], $remember)) {
             RateLimiter::hit($this->throttleKey($data['email']));
             throw ValidationException::withMessages([
                 'email' => 'Invalid credentials.',
