@@ -30,4 +30,5 @@
             <path d="M7 16.5c3.5 1 6.5 1 10 0" />
         </svg>
     </a>
+    <p class="text-center">Copyright &copy; Ionel Olariu — 2026</p>
 </footer>
