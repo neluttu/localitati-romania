@@ -1,5 +1,4 @@
 <footer class="max-w-7xl mx-auto px-4 my-16 text-center flex items-center justify-center gap-10">
-    <p class="text-center">Copyright &copy; Ionel Olariu 2026</p>
     <a href="https://x.com/neluttu" target="_blank">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
