@@ -32,5 +32,4 @@
         </svg>
     </a>
     <p class="text-center">Copyright     </a>copy; Ionel Olariu</p>
-    <p class="text-center">Copyright &copy; Ionel Olariu — 2026</p>
 </footer>
