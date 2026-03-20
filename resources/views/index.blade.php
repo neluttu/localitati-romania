@@ -9,7 +9,7 @@
                 <p class="tracking-tight">Date administrative oficiale pentru România</p>
                 <div class="grid md:grid-cols-3 grid-cols-1 gap-6 max-w-5xl mt-8 mx-auto">
                     <select name="county" id="county"
-                        class="rounded-full border-none text-base p-2 px-3 bg-[#002b7f] text-white">
+                        class="rounded-full border-none text-base w-full p-2 px-3 bg-[#002b7f] text-white">
                         <option>- Alege un județ -</option>
                         <option value="Alba" data-abbr="AB">Alba</option>
                         <option value="Arad" data-abbr="AR">Arad</option>
@@ -55,11 +55,11 @@
                         <option value="Vrancea" data-abbr="VN">Vrancea</option>
                     </select>
                     <select name="city" id="city"
-                        class="rounded-full border-none bg-[#fcd116] text-yellow-800 text-base p-2 px-3">
+                        class="rounded-full border-none w-full bg-[#fcd116] text-yellow-800 text-base p-2 px-3">
                         <option>- Alege orașul -</option>
                     </select>
                     <input name="postal_code" id="postal_code"
-                        class="rounded-full border-none bg-[#ce1126] text-white text-base p-2 border-gray-300 px-3 placeholder:text-gray-200"
+                        class="rounded-full border-none w-full bg-[#ce1126] text-white text-base p-2 border-gray-300 px-3 placeholder:text-gray-200"
                         placeholder="Cod poștal">
                 </div>
             </div>
