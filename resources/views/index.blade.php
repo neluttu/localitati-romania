@@ -65,7 +65,7 @@
             </div>
         </div>
     </div>
-    <div class="max-w-7xl mx-auto px-4 flex items-center justify-start gap-10 mt-10">
+    <div class="max-w-7xl mx-auto px-4 flex items-center justify-start gap-10 mt-10 flex-col md:flex-row">
         <div class="text-lg grow font-light">
             <h2 class="text-4xl pb-3 tracking-tight text-primary-blue">
                 Alege rapid
@@ -77,7 +77,7 @@
                 Vezi documentația
             </a>
         </div>
-        <img src="{{ asset('storage/images/form.jpg') }}" class="max-w-4xl w-full">
+        <img src="{{ asset('storage/images/form.jpg') }}" class="max-w-4xl w-full md:w-1/2">
     </div>
     <div class="space-y-3 my-10 max-w-7xl mx-auto px-4">
         <h1 class="text-xl">Set de date</h1>
