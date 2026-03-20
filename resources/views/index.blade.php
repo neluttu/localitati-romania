@@ -7,7 +7,7 @@
             <div class="text-center text-5xl font-normal p-10 bg-white/80  backdrop-blur-md w-full  shadow-[0px_0px_48px_5px_rgba(204,204,204,0.35)]"
                 data-localities-api>
                 <p class="tracking-tight">Date administrative oficiale pentru România</p>
-                <div class="grid grid-cols-3 gap-6 max-w-5xl mt-8 mx-auto">
+                <div class="grid md:grid-cols-3 grid-cols-1 gap-6 max-w-5xl mt-8 mx-auto">
                     <select name="county" id="county"
                         class="rounded-full border-none text-base p-2 px-3 bg-[#002b7f] text-white">
                         <option>- Alege un județ -</option>
