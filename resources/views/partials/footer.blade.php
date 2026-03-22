@@ -1,8 +1,5 @@
 <footer class="max-w-7xl mx-auto px-4 my-16 text-center flex flex-col items-center justify-center gap-4">
     <div class="flex items-center justify-center gap-10">
-    <div class="w-full text-center">
-        <p class="text-xs text-gray-500">Made with love</p>
-    </div>
         <a href="https://x.com/neluttu" target="_blank">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
