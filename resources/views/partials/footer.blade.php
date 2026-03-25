@@ -31,5 +31,5 @@
             </svg>
         </a>
     </div>
-    <p class="text-center text-sm text-gray-500">Copyright &copy; Ionel Olariu</p>
+    <p class="text-center text-sm text-gray-500">Copyright &copy; Neluttu</p>
 </footer>
