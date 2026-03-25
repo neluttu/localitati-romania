@@ -11,21 +11,18 @@ jobs:
     runs-on: ubuntu-latest
     env:
       WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+      DEPLOY_URL: https://vps.devserver.ro/api/webhook/deploy
+      REPO_URL: https://github.com/neluttu/localitati-romania
     steps:
-      - name: Trigger deploy webhook
-        shell: bash
+      - name: Deploy to VPS
         run: |
-          PAYLOAD='{"ref":"refs/heads/main","repository":{"html_url":"https://github.com/neluttu/localitati-romania"}}'
+          PAYLOAD="{\"ref\":\"refs/heads/main\",\"repository\":{\"html_url\":\"$REPO_URL\"}}"
           SIGNATURE="sha256=$(echo -n "$PAYLOAD" | openssl dgst -sha256 -hmac "$WEBHOOK_SECRET" | cut -d' ' -f2)"
-          HTTP_CODE=$(curl -s -o /tmp/response.txt -w "%{http_code}" -X POST \
-            https://vps.devserver.ro/api/webhook/deploy \
-            -H "Content-Type: application/json" \
-            -H "X-Hub-Signature-256: $SIGNATURE" \
-            -d "$PAYLOAD")
-          cat /tmp/response.txt
+          HTTP_CODE=$(curl -s -o response.txt -w "%{http_code}" -X POST "$DEPLOY_URL" -H "Content-Type: application/json" -H "X-Hub-Signature-256: $SIGNATURE" -d "$PAYLOAD")
+          cat response.txt
           echo ""
-          echo "HTTP Status: $HTTP_CODE"
           if [ "$HTTP_CODE" != "200" ]; then
-            echo "Deploy failed!"
+            echo "Deploy failed with HTTP $HTTP_CODE"
             exit 1
           fi
+          echo "Deploy successful"
