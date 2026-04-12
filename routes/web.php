@@ -20,8 +20,6 @@ Route::get('/view/counties/{county}/localities', fn ($county) => view('api.local
 Route::get('/exemple-api-judete-localitati', [IndexController::class, 'examples'])->name('examples.index');
 Route::get('/docs', fn () => view('docs.index'))->name('docs');
 
-Route::middleware('api')
-    ->group(base_path('routes/api.php'));
 
 // ===============================
 // Guest Only
