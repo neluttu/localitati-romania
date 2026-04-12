@@ -1,0 +1,4 @@
+[mcp_servers.laravel-boost]
+command = "/usr/bin/php"
+args = ["/var/www/html/personal/localitati-romania/artisan", "boost:mcp"]
+cwd = "/var/www/html/personal/localitati-romania"
