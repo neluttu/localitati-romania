@@ -13,8 +13,7 @@ use App\Http\Middleware\ValidateSiteToken;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware(['api', Cors::class])
-    ->prefix('v1')
+Route::middleware([Cors::class])
     ->group(function (): void {
 
         /*
