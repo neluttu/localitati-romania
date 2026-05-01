@@ -57,7 +57,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             <div class="bg-purple-50 rounded-xl p-4">
                 <div class="text-2xl font-bold text-purple-600">{{ number_format($site->api_logs_count) }}</div>
                 <div class="text-gray-500 text-sm">Total API Calls</div>
@@ -70,12 +70,37 @@
                 <div class="text-lg font-bold text-gray-900">{{ $site->updated_at->format('d.m.Y') }}</div>
                 <div class="text-gray-500 text-sm">Ultima actualizare</div>
             </div>
-            <div class="bg-gray-50 rounded-xl p-4">
-                <div class="text-xs font-mono text-gray-600 break-all">{{ substr($site->token, 0, 20) }}...</div>
-                <div class="text-gray-500 text-sm">Token (parțial)</div>
+        </div>
+
+        {{-- Token Section --}}
+        <div class="bg-gray-50 rounded-xl p-4">
+            <label class="block text-sm font-medium text-gray-700 mb-2">Token API</label>
+            <div class="flex items-center gap-3">
+                <input type="text" readonly value="{{ $site->token }}" id="admin-token-field"
+                    class="flex-1 px-4 py-2 bg-white border border-gray-300 rounded-lg font-mono text-sm">
+                <button type="button" onclick="copyAdminToken()"
+                    class="px-4 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-lg transition-colors">
+                    Copiază
+                </button>
+            </div>
+            <div class="mt-3 p-3 bg-blue-50 rounded-lg">
+                <p class="text-sm text-blue-800 font-medium mb-1">Header pentru request:</p>
+                <code class="text-xs text-blue-700 block break-all">X-Site-Token: {{ $site->token }}</code>
+                @if ($site->domain)
+                    <p class="text-xs text-blue-600 mt-2">Domeniu autorizat: <strong>{{ $site->domain }}</strong></p>
+                @endif
             </div>
         </div>
     </div>
+
+    <script>
+        function copyAdminToken() {
+            const f = document.getElementById('admin-token-field');
+            f.select();
+            document.execCommand('copy');
+            alert('Token copiat!');
+        }
+    </script>
 
     {{-- Recent Logs --}}
     @if ($recentLogs->isNotEmpty())
