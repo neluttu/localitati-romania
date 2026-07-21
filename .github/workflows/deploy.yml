@@ -129,19 +129,20 @@ jobs:
       # public/.htaccess is deliberately excluded - it is server-managed and
       # carries the cPanel-generated PHP handler block plus the security
       # headers. Deploying the repo copy over it silently drops both.
-      # FTPS keeps the credentials and the payload off the wire in plaintext.
-      # security: loose skips certificate verification, because the host's
-      # certificate is issued for cloud348.c-f.ro rather than the FTP_HOST value.
-      # Point FTP_HOST at cloud348.c-f.ro to switch this to `strict`, which also
-      # authenticates the server and closes the remaining MITM gap.
+      # The server is named literally rather than via a secret: a hostname is
+      # public DNS, and pinning it here is what lets `security: strict` verify
+      # the certificate, which is issued for cloud348.c-f.ro. Together with
+      # protocol: ftps this encrypts the transfer and authenticates the server,
+      # so neither the credentials nor the payload can be read or substituted
+      # in transit. Only the credentials stay in secrets, where they belong.
       - name: Deploy via FTPS
         uses: SamKirkland/FTP-Deploy-Action@8e83cea8672e3fbcbb9fdafff34debf6ae4c5f65 # v4.3.5
         with:
-          server: ${{ secrets.FTP_HOST }}
+          server: cloud348.c-f.ro
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
-          security: loose
+          security: strict
           server-dir: /api.siruta.ro/
           exclude: |
             **/.git*
