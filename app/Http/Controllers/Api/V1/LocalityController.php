@@ -25,8 +25,18 @@ class LocalityController extends Controller
         // 0. Validare query params
         // ------------------------------
 
-        $validator = Validator::make($request->query(), [
-            'county' => ['required', 'string', 'size:2', 'exists:counties,abbr'],
+        // Abbreviations are advertised in lowercase by the counties endpoint but
+        // stored uppercase, so normalise before the exists check rather than
+        // relying on the database collation to ignore case.
+        $params = $request->query();
+
+        if (is_string($params['county'] ?? null)) {
+            $params['county'] = strtoupper($params['county']);
+        }
+
+        $validator = Validator::make($params, [
+            // București is abbreviated "B", so the length is 1 or 2, not a fixed 2.
+            'county' => ['required', 'string', 'between:1,2', 'exists:counties,abbr'],
         ]);
 
         if ($validator->fails()) {
@@ -39,7 +49,7 @@ class LocalityController extends Controller
         // ------------------------------
         // 1. Fetch County & Localities
         // ------------------------------
-        $countyCode = strtoupper($request->query('county'));
+        $countyCode = $params['county'];
         $county = County::where('abbr', $countyCode)->firstOrFail();
         $localities = $this->localityService->getByCountyWithParent($county);
 

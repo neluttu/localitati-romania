@@ -6,12 +6,15 @@ namespace App\Models;
 
 use App\Enums\LocalityType;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Locality extends Model
 {
+    use HasFactory;
+
     protected $fillable = [
         'siruta_code',
         'siruta_parent',
@@ -54,10 +57,17 @@ class Locality extends Model
      */
     public function scopeOrdered(Builder $query): Builder
     {
-        $order = implode(',', LocalityType::orderList());
+        // Expressed as CASE rather than MySQL's FIELD() so the ordering also runs
+        // on SQLite, which the test suite uses. The 1-based positions and the 0
+        // fallback reproduce FIELD() exactly, keeping unlisted types sorted first.
+        $cases = '';
+
+        foreach (LocalityType::orderList() as $index => $type) {
+            $cases .= sprintf(' WHEN %d THEN %d', $type, $index + 1);
+        }
 
         return $query
-            ->orderByRaw("FIELD(type, $order)")
+            ->orderByRaw("CASE type{$cases} ELSE 0 END")
             ->orderBy('type');
     }
 
