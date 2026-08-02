@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\UserRole;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -26,6 +27,11 @@ class UserFactory extends Factory
         return [
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
+            'terms_accepted_at' => now(),
+            // Matches the column default. Without it the created model has no
+            // role attribute in memory, and strict mode turns every view that
+            // reads it into a 500 during tests.
+            'role' => UserRole::User,
             'password' => static::$password ??= Hash::make('password'),
             'remember_token' => Str::random(10),
         ];

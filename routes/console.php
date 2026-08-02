@@ -10,3 +10,6 @@ Artisan::command('inspire', function () {
 
 // Prune API logs older than 90 days (runs daily at 3 AM)
 Schedule::command('api-logs:prune')->dailyAt('03:00');
+
+// Permanently remove accounts whose 30-day restore window has closed
+Schedule::command('accounts:purge')->dailyAt('03:30');
