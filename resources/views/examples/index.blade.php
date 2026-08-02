@@ -190,7 +190,7 @@
 
             <span class="text-purple-400">this</span>.loading = <span class="text-purple-400">true</span>;
             <span class="text-purple-400">const</span> res = <span class="text-purple-400">await</span> <span class="text-blue-400">fetch</span>(
-                <span class="text-green-400">`https://api.siruta.ro/v1/localities?search=</span><span class="text-amber-400">${this.query}</span><span class="text-green-400">`</span>,
+                <span class="text-green-400">`https://api.siruta.ro/v1/localities?county=MS&search=</span><span class="text-amber-400">${this.query}</span><span class="text-green-400">`</span>,
                 { headers: { <span class="text-green-400">'X-Site-Token'</span>: <span class="text-green-400">'YOUR_TOKEN'</span> } }
             );
             <span class="text-purple-400">const</span> data = <span class="text-purple-400">await</span> res.<span class="text-blue-400">json</span>();

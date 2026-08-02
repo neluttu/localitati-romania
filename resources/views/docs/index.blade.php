@@ -268,23 +268,23 @@
                                 <div class="border border-gray-200 rounded-2xl p-5 hover:border-gray-300 transition-colors">
                                     <div class="flex items-center gap-2 mb-2">
                                         <span class="px-2 py-0.5 text-xs font-bold rounded bg-emerald-100 text-emerald-700">GET</span>
-                                        <code class="text-xs font-mono text-gray-700">/localities/lite</code>
+                                        <code class="text-xs font-mono text-gray-700">/localities/lite?county=MS</code>
                                     </div>
-                                    <p class="text-sm text-gray-600">Versiune simplificată - ideal pentru dropdown-uri</p>
+                                    <p class="text-sm text-gray-600">Versiune simplificată - ideal pentru dropdown-uri. Parametrul <code>county</code> este obligatoriu.</p>
                                 </div>
                                 <div class="border border-gray-200 rounded-2xl p-5 hover:border-gray-300 transition-colors">
                                     <div class="flex items-center gap-2 mb-2">
                                         <span class="px-2 py-0.5 text-xs font-bold rounded bg-emerald-100 text-emerald-700">GET</span>
-                                        <code class="text-xs font-mono text-gray-700">/localities/grouped</code>
+                                        <code class="text-xs font-mono text-gray-700">/localities/grouped?county=MS</code>
                                     </div>
-                                    <p class="text-sm text-gray-600">Grupate după tip (municipii, orașe, comune)</p>
+                                    <p class="text-sm text-gray-600">Grupate după tip (municipii, orașe, comune). Parametrul <code>county</code> este obligatoriu.</p>
                                 </div>
                                 <div class="border border-gray-200 rounded-2xl p-5 hover:border-gray-300 transition-colors">
                                     <div class="flex items-center gap-2 mb-2">
                                         <span class="px-2 py-0.5 text-xs font-bold rounded bg-emerald-100 text-emerald-700">GET</span>
-                                        <code class="text-xs font-mono text-gray-700">/localities</code>
+                                        <code class="text-xs font-mono text-gray-700">/localities?county=MS</code>
                                     </div>
-                                    <p class="text-sm text-gray-600">Căutare globală cu filtre (search, county, type)</p>
+                                    <p class="text-sm text-gray-600">Căutare într-un județ. <code>county</code> este obligatoriu; <code>search</code> și <code>type</code> sunt opționale.</p>
                                 </div>
                                 <div class="border border-gray-200 rounded-2xl p-5 hover:border-gray-300 transition-colors">
                                     <div class="flex items-center gap-2 mb-2">

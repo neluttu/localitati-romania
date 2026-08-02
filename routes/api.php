@@ -69,6 +69,12 @@ Route::middleware([Cors::class])
             |--------------------------------------------------------------------------
             */
             Route::get('/localities', [LocalityController::class, 'index'])->name('api.localities.index');
+
+            // Registered before the {siruta} placeholder, which would otherwise
+            // read "lite" and "grouped" as locality codes and never match.
+            Route::get('/localities/lite', [CountyLocalitiesLiteController::class, 'byQuery'])->name('api.localities.query.lite');
+            Route::get('/localities/grouped', [CountyLocalitiesGroupedController::class, 'byQuery'])->name('api.localities.query.grouped');
+
             Route::get('/localities/{siruta}', [LocalityController::class, 'show'])->name('api.localities.show');
 
             /*

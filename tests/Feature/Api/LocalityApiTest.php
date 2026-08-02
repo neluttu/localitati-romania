@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Api;
 
+use App\Enums\LocalityType;
 use App\Models\County;
 use App\Models\Locality;
 use App\Models\Site;
@@ -95,5 +96,141 @@ class LocalityApiTest extends TestCase
 
         $response->assertStatus(422)
             ->assertJsonValidationErrors('county');
+    }
+
+    public function test_lite_endpoint_returns_a_simplified_list(): void
+    {
+        $county = County::factory()->create(['abbr' => 'MS']);
+        Locality::factory()->count(2)->create([
+            'county_id' => $county->id,
+            'type' => LocalityType::SAT->value,
+        ]);
+
+        $response = $this->getJson('/v1/localities/lite?county=MS', $this->apiHeaders());
+
+        $response->assertStatus(200)
+            ->assertJsonCount(2, 'data')
+            ->assertJsonStructure([
+                'data' => [
+                    ['id', 'siruta_code', 'name', 'name_ascii', 'postal_code'],
+                ],
+                'meta' => ['county', 'total'],
+            ]);
+    }
+
+    public function test_lite_endpoint_requires_a_county(): void
+    {
+        $response = $this->getJson('/v1/localities/lite', $this->apiHeaders());
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('county');
+    }
+
+    public function test_grouped_endpoint_groups_localities_by_type(): void
+    {
+        $county = County::factory()->create(['abbr' => 'MS']);
+        Locality::factory()->create([
+            'county_id' => $county->id,
+            'type' => LocalityType::MUNICIPIU->value,
+        ]);
+        Locality::factory()->create([
+            'county_id' => $county->id,
+            'type' => LocalityType::SAT->value,
+        ]);
+
+        $response = $this->getJson('/v1/localities/grouped?county=MS', $this->apiHeaders());
+
+        $response->assertStatus(200)
+            ->assertJsonCount(1, 'data.municipii')
+            ->assertJsonCount(1, 'data.sate')
+            ->assertJsonPath('meta.counts.municipii', 1)
+            ->assertJsonPath('meta.counts.sate', 1);
+    }
+
+    public function test_grouped_endpoint_requires_a_county(): void
+    {
+        $response = $this->getJson('/v1/localities/grouped', $this->apiHeaders());
+
+        $response->assertStatus(422)
+            ->assertJsonValidationErrors('county');
+    }
+
+    /**
+     * The named sub-paths must win over the {siruta} placeholder, otherwise
+     * they are read as locality codes and can never resolve.
+     */
+    public function test_named_sub_paths_are_not_swallowed_by_the_siruta_route(): void
+    {
+        County::factory()->create(['abbr' => 'MS']);
+
+        $this->getJson('/v1/localities/lite?county=MS', $this->apiHeaders())
+            ->assertStatus(200);
+        $this->getJson('/v1/localities/grouped?county=MS', $this->apiHeaders())
+            ->assertStatus(200);
+    }
+
+    public function test_a_single_locality_is_returned_by_siruta_code(): void
+    {
+        $county = County::factory()->create(['abbr' => 'MS']);
+        Locality::factory()->create([
+            'county_id' => $county->id,
+            'siruta_code' => 114458,
+            'name' => 'Municipiul Târgu Mureș',
+            'name_ascii' => 'targu mures',
+            'type' => LocalityType::MUNICIPIU_RESEDINTA->value,
+        ]);
+
+        $response = $this->getJson('/v1/localities/114458', $this->apiHeaders());
+
+        $response->assertStatus(200)
+            ->assertJsonPath('data.siruta_code', 114458)
+            ->assertJsonPath('data.name', 'Târgu Mureș')
+            ->assertJsonPath('data.type', LocalityType::MUNICIPIU_RESEDINTA->value)
+            ->assertJsonPath('meta.county.abbr', 'MS');
+    }
+
+    public function test_a_locality_exposes_its_parent(): void
+    {
+        $county = County::factory()->create(['abbr' => 'MS']);
+        Locality::factory()->create([
+            'county_id' => $county->id,
+            'siruta_code' => 114458,
+            'name' => 'Municipiul Târgu Mureș',
+            'type' => LocalityType::MUNICIPIU_RESEDINTA->value,
+        ]);
+        Locality::factory()->create([
+            'county_id' => $county->id,
+            'siruta_code' => 114467,
+            'siruta_parent' => 114458,
+            'name' => 'Remetea',
+            'type' => LocalityType::COMPONENTA_MUNICIPIU->value,
+        ]);
+
+        $response = $this->getJson('/v1/localities/114467', $this->apiHeaders());
+
+        $response->assertStatus(200)
+            ->assertJsonPath('data.parent.siruta_code', 114458)
+            ->assertJsonPath('data.parent.name', 'Târgu Mureș');
+    }
+
+    public function test_unknown_siruta_code_returns_404(): void
+    {
+        $response = $this->getJson('/v1/localities/999999', $this->apiHeaders());
+
+        $response->assertStatus(404)
+            ->assertJsonPath('error', 'Locality not found.');
+    }
+
+    /**
+     * A non-numeric segment is what an undocumented path such as
+     * /v1/localities/foo collapses to. It must read as "no such locality",
+     * never as a server error.
+     */
+    public function test_non_numeric_siruta_code_returns_404(): void
+    {
+        $response = $this->getJson('/v1/localities/not-a-code', $this->apiHeaders());
+
+        $response->assertStatus(404)
+            ->assertJsonPath('error', 'Locality not found.');
     }
 }

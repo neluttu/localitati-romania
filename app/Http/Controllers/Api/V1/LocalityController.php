@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CountyResource;
 use App\Http\Resources\LocalityResource;
 use App\Models\County;
+use App\Models\Locality;
+use App\Services\CountyService;
 use App\Services\LocalityService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,7 +18,8 @@ use Illuminate\Support\Facades\Validator;
 class LocalityController extends Controller
 {
     public function __construct(
-        protected LocalityService $localityService
+        protected LocalityService $localityService,
+        protected CountyService $countyService
     ) {}
 
     public function index(Request $request): JsonResponse
@@ -91,5 +95,42 @@ class LocalityController extends Controller
                 'total' => $localities->count(),
             ],
         ]);
+    }
+
+    public function show(string $siruta): JsonResponse
+    {
+        // A SIRUTA code is always numeric, so anything else is a path that was
+        // never a locality - answer "not found" instead of letting the lookup
+        // reach the database and blow up on a type mismatch.
+        if (! ctype_digit($siruta)) {
+            return $this->localityNotFound();
+        }
+
+        $locality = Locality::with(['parent', 'county'])
+            ->where('siruta_code', (int) $siruta)
+            ->first();
+
+        if (! $locality) {
+            return $this->localityNotFound();
+        }
+
+        return response()->json([
+            'data' => new LocalityResource(
+                $this->localityService->toResourceArray($locality)
+            ),
+            'meta' => [
+                'county' => new CountyResource(
+                    $this->countyService->resolve($locality->county->abbr)
+                ),
+            ],
+        ]);
+    }
+
+    private function localityNotFound(): JsonResponse
+    {
+        return response()->json([
+            'error' => 'Locality not found.',
+            'status' => 404,
+        ], 404);
     }
 }

@@ -47,6 +47,24 @@ class CountyController extends Controller
         ]);
     }
 
+    /**
+     * The county's localities as one ungrouped list, for callers that do their
+     * own grouping and only want a flat array to iterate.
+     */
+    public function localitiesFlat(County $county): JsonResponse
+    {
+        $localities = $this->localityService->getByCountyWithParent($county);
+        $countyArray = $this->countyService->resolve($county->abbr);
+
+        return response()->json([
+            'data' => LocalityResource::collection($localities),
+            'meta' => [
+                'county' => new CountyResource($countyArray),
+                'total' => $localities->count(),
+            ],
+        ]);
+    }
+
     public function localities(County $county, Request $request): JsonResponse
     {
         // -------------------------------------------------

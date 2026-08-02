@@ -3,6 +3,7 @@
 namespace Tests\Feature\Api;
 
 use App\Models\County;
+use App\Models\Locality;
 use App\Models\Site;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -112,5 +113,23 @@ class CountyApiTest extends TestCase
 
         $responseLower->assertStatus(200);
         $responseUpper->assertStatus(200);
+    }
+
+    public function test_localities_flat_returns_one_ungrouped_list(): void
+    {
+        $county = County::factory()->create(['abbr' => 'MS']);
+        Locality::factory()->count(3)->create(['county_id' => $county->id]);
+
+        $response = $this->getJson('/v1/counties/MS/localities/flat', $this->apiHeaders());
+
+        $response->assertStatus(200)
+            ->assertJsonCount(3, 'data')
+            ->assertJsonPath('meta.total', 3)
+            ->assertJsonPath('meta.county.abbr', 'MS')
+            ->assertJsonStructure([
+                'data' => [
+                    ['id', 'siruta_code', 'name', 'type', 'type_label'],
+                ],
+            ]);
     }
 }

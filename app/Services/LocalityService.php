@@ -6,6 +6,7 @@ namespace App\Services;
 
 use App\Enums\LocalityType;
 use App\Models\County;
+use App\Models\Locality;
 use App\Repositories\LocalityRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -132,6 +133,49 @@ class LocalityService
                     'postal_code' => $l['postal_code'] !== '000000' ? $l['postal_code'] : null,
                 ])
         );
+    }
+
+    /**
+     * Map one model onto the same array shape the cached county listings use,
+     * so a locality fetched on its own renders identically to a listed one.
+     * Read straight from the model rather than the county cache: a single
+     * lookup must not depend on a 90-day cache entry being warm and current.
+     *
+     * @return array<string, mixed>
+     */
+    public function toResourceArray(Locality $locality): array
+    {
+        $parent = $locality->parent;
+
+        return [
+            'id' => (int) $locality->id,
+            'siruta_code' => (int) $locality->siruta_code,
+            'siruta_parent' => $locality->siruta_parent !== null
+                ? (int) $locality->siruta_parent
+                : null,
+
+            'display_name' => $locality->display_name,
+            'name_ascii' => $locality->name_ascii,
+
+            'type' => $this->typeValue($locality),
+
+            'postal_code' => $locality->postal_code,
+            'lat' => $locality->lat !== null ? (float) $locality->lat : null,
+            'lng' => $locality->lng !== null ? (float) $locality->lng : null,
+
+            'parent' => $parent ? [
+                'siruta_code' => (int) $parent->siruta_code,
+                'name' => $parent->display_name,
+                'type' => $this->typeValue($parent),
+            ] : null,
+        ];
+    }
+
+    private function typeValue(Locality $locality): int
+    {
+        return $locality->type instanceof LocalityType
+            ? $locality->type->value
+            : (int) $locality->type;
     }
 
     private function attachParent(Collection $localities): Collection
