@@ -118,6 +118,91 @@ class ValidateSiteTokenTest extends TestCase
         $response->assertStatus(200);
     }
 
+    public function test_request_without_origin_or_referer_is_allowed(): void
+    {
+        $user = User::factory()->create();
+        $site = Site::factory()->create([
+            'user_id' => $user->id,
+            'domain' => 'example.com',
+        ]);
+
+        $response = $this->getJson('/v1/counties', [
+            'X-Site-Token' => $site->token,
+        ]);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_referer_is_used_when_origin_is_absent(): void
+    {
+        $user = User::factory()->create();
+        $site = Site::factory()->create([
+            'user_id' => $user->id,
+            'domain' => 'example.com',
+        ]);
+
+        $response = $this->getJson('/v1/counties', [
+            'X-Site-Token' => $site->token,
+            'Referer' => 'https://example.com/some/page',
+        ]);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_mismatched_referer_returns_403(): void
+    {
+        $user = User::factory()->create();
+        $site = Site::factory()->create([
+            'user_id' => $user->id,
+            'domain' => 'example.com',
+        ]);
+
+        $response = $this->getJson('/v1/counties', [
+            'X-Site-Token' => $site->token,
+            'Referer' => 'https://different-domain.com/some/page',
+        ]);
+
+        $response->assertStatus(403)
+            ->assertJson([
+                'error' => 'Domain mismatch.',
+            ]);
+    }
+
+    public function test_domain_suffix_lookalike_is_rejected(): void
+    {
+        $user = User::factory()->create();
+        $site = Site::factory()->create([
+            'user_id' => $user->id,
+            'domain' => 'example.com',
+        ]);
+
+        $response = $this->getJson('/v1/counties', [
+            'X-Site-Token' => $site->token,
+            'Origin' => 'https://notexample.com',
+        ]);
+
+        $response->assertStatus(403)
+            ->assertJson([
+                'error' => 'Domain mismatch.',
+            ]);
+    }
+
+    public function test_wildcard_domain_allows_the_apex_domain(): void
+    {
+        $user = User::factory()->create();
+        $site = Site::factory()->create([
+            'user_id' => $user->id,
+            'domain' => '*.example.com',
+        ]);
+
+        $response = $this->getJson('/v1/counties', [
+            'X-Site-Token' => $site->token,
+            'Origin' => 'https://example.com',
+        ]);
+
+        $response->assertStatus(200);
+    }
+
     public function test_localhost_domain_allows_localhost_requests(): void
     {
         $user = User::factory()->create();

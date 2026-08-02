@@ -39,9 +39,52 @@ class ValidateSiteToken
             ], 401);
         }
 
+        $host = $this->originHost($request);
+
+        if ($host !== null && ! $this->hostMatchesDomain($host, $site->domain)) {
+            return response()->json([
+                'error' => 'Domain mismatch.',
+                'message' => 'This site token is not authorised for the requesting domain.',
+            ], 403);
+        }
+
         // Store site in request for later use (logging, etc.)
         $request->attributes->set('site', $site);
 
         return $next($request);
+    }
+
+    /**
+     * The host the call claims to come from, or null when the client sends
+     * neither header. Server-to-server callers (cURL, backend jobs) have no
+     * Origin to send, so a missing host is deliberately not a mismatch - the
+     * token alone authorises them.
+     */
+    private function originHost(Request $request): ?string
+    {
+        $source = $request->header('Origin') ?: $request->header('Referer');
+
+        if (! $source) {
+            return null;
+        }
+
+        return parse_url($source, PHP_URL_HOST) ?: null;
+    }
+
+    /**
+     * A registered domain also covers its subdomains, so "example.com" accepts
+     * "sub.example.com". The dot in the suffix check is what keeps
+     * "notexample.com" from passing as a subdomain of "example.com".
+     */
+    private function hostMatchesDomain(string $host, string $domain): bool
+    {
+        $host = strtolower($host);
+        $domain = strtolower($domain);
+
+        if (str_starts_with($domain, '*.')) {
+            $domain = substr($domain, 2);
+        }
+
+        return $host === $domain || str_ends_with($host, '.'.$domain);
     }
 }
