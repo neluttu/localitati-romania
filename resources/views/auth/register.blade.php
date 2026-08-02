@@ -63,9 +63,9 @@
                             class="mt-1 w-4 h-4 shrink-0 rounded border-gray-300 text-purple-600 focus:ring-purple-500">
                         <span class="text-sm text-gray-600 leading-snug">
                             Am citit și accept
-                            <a href="{{ route('legal.terms') }}" target="_blank" class="text-purple-600 hover:underline">termenii și condițiile</a>,
-                            <a href="{{ route('legal.privacy') }}" target="_blank" class="text-purple-600 hover:underline">politica de confidențialitate</a>
-                            și <a href="{{ route('legal.cookies') }}" target="_blank" class="text-purple-600 hover:underline">politica de cookies</a>.
+                            <a href="{{ url('/termeni-si-conditii') }}" target="_blank" class="text-purple-600 hover:underline">termenii și condițiile</a>,
+                            <a href="{{ url('/politica-de-confidentialitate') }}" target="_blank" class="text-purple-600 hover:underline">politica de confidențialitate</a>
+                            și <a href="{{ url('/politica-de-cookies') }}" target="_blank" class="text-purple-600 hover:underline">politica de cookies</a>.
                         </span>
                     </label>
                     @error('terms')

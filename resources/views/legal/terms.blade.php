@@ -71,9 +71,9 @@
                 </p>
                 <p class="mt-3">
                     Îți poți șterge contul oricând, singur, din
-                    <a href="{{ route('dashboard.account.delete') }}" class="text-purple-600 hover:underline">panoul tău</a>.
+                    <a href="{{ url('/dashboard/account/delete') }}" class="text-purple-600 hover:underline">panoul tău</a>.
                     Tokenurile se opresc imediat, iar datele se șterg definitiv după 30 de zile. Detaliile sunt în
-                    <a href="{{ route('legal.privacy') }}" class="text-purple-600 hover:underline">politica de confidențialitate</a>.
+                    <a href="{{ url('/politica-de-confidentialitate') }}" class="text-purple-600 hover:underline">politica de confidențialitate</a>.
                 </p>
             </section>
 

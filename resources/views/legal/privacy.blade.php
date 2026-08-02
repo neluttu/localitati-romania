@@ -116,7 +116,7 @@
                 </ul>
                 <p class="mt-3">
                     Îți poți șterge singur contul, oricând, din
-                    <a href="{{ route('dashboard.account.delete') }}" class="text-purple-600 hover:underline">panoul tău</a>.
+                    <a href="{{ url('/dashboard/account/delete') }}" class="text-purple-600 hover:underline">panoul tău</a>.
                     Pentru celelalte drepturi scrie-ne la
                     <a href="mailto:contact@siruta.ro" class="text-purple-600 hover:underline">contact@siruta.ro</a>;
                     răspundem în cel mult 30 de zile.
@@ -142,7 +142,7 @@
                 <h2 class="text-xl font-semibold text-gray-900 mb-3">8. Cookies</h2>
                 <p>
                     Folosim doar cookie-uri strict necesare funcționării. Detaliile sunt în
-                    <a href="{{ route('legal.cookies') }}" class="text-purple-600 hover:underline">politica de cookies</a>.
+                    <a href="{{ url('/politica-de-cookies') }}" class="text-purple-600 hover:underline">politica de cookies</a>.
                 </p>
             </section>
         </div>

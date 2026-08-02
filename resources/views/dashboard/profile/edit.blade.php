@@ -162,7 +162,7 @@
                 Contul și site-urile tale sunt dezactivate imediat, iar tokenurile încetează să funcționeze.
                 Datele se șterg definitiv după 30 de zile.
             </p>
-            <a href="{{ route('dashboard.account.delete') }}"
+            <a href="{{ url('/dashboard/account/delete') }}"
                 class="inline-flex items-center gap-2 mt-4 px-5 py-2.5 border border-red-300 text-red-700 font-medium rounded-xl hover:bg-red-100 transition-colors">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

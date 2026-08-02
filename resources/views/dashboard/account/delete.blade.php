@@ -37,7 +37,7 @@
                 </ul>
             </div>
 
-            <form method="POST" action="{{ route('dashboard.account.destroy') }}" class="p-6 bg-red-50/50">
+            <form method="POST" action="{{ url('/dashboard/account') }}" class="p-6 bg-red-50/50">
                 @csrf
                 @method('DELETE')
 
