@@ -2,7 +2,26 @@
   "permissions": {
     "allow": [
       "Bash(php artisan test)",
-      "mcp__laravel-boost__tinker"
+      "mcp__laravel-boost__tinker",
+      "Bash(curl -s -w \"\\\\nHTTP %{http_code}\\\\n\" https://siruta.ro/api/health)",
+      "Bash(curl -s -w \"\\\\nHTTP %{http_code}\\\\n\" https://siruta.ro/v1/health)",
+      "Bash(curl -s -w '\\\\nHTTP %{http_code}\\\\n' -H 'X-Site-Token: HDc27CNpCT9YAib9MSRFUzRXxKAZs7iNFF35HobK5Oxq6Vo3VYpejfV5xcYVvnP4' -H 'Origin: https://integraviva.ro' https://siruta.ro/v1/counties)",
+      "Bash(tailscale status *)",
+      "Bash(ssh -o BatchMode=yes -o ConnectTimeout=5 vps 'hostname && ls /var/www/html 2>/dev/null | head -20')",
+      "Bash(curl -s -w '\\\\nHTTP %{http_code}\\\\n' -H 'X-Site-Token: WKFFWvqvgTgn6cxJDH1leEuE2vFcXNy4J1OGsMYddTlTrlnlRJKUeBcRdz208QNa' https://siruta.ro/v1/counties)",
+      "Bash(curl -s -w '\\\\nHTTP %{http_code}\\\\n' -H 'X-Site-Token: WKFFWvqvgTgn6cxJDH1leEuE2vFcXNy4J1OGsMYddTlTrlnlRJKUeBcRdz208QNa' 'https://siruta.ro/v1/counties/cluj/localities?per_page=3')",
+      "Bash(curl -s -w '\\\\nHTTP %{http_code}\\\\n' -H 'X-Site-Token: WKFFWvqvgTgn6cxJDH1leEuE2vFcXNy4J1OGsMYddTlTrlnlRJKUeBcRdz208QNa' 'https://siruta.ro/v1/counties/CJ/localities?per_page=3')",
+      "Bash(ssh vps 'cd /var/www/siruta.ro && php artisan tinker --no-interaction --execute='\\\\''echo json_encode\\([ *)",
+      "Bash(ssh vps *)",
+      "Bash(curl -s -o /tmp/siruta_resp.txt -w \"HTTP=%{http_code}\\\\n\" -H \"X-Site-Token: tIbdOBCGRwjXgLqM6ssMU7Ey627EstsvihWlOR0dLXpfiHIALQct6O9foGGNjo0u\" -H \"Accept: application/json\" https://api.siruta.ro/v1/counties/MS/localities)",
+      "Bash(curl -s -H 'X-Site-Token: tIbdOBCGRwjXgLqM6ssMU7Ey627EstsvihWlOR0dLXpfiHIALQct6O9foGGNjo0u' 'https://api.siruta.ro/v1/counties/MS/localities' --max-time 10)",
+      "Bash(getent hosts *)",
+      "Read(//etc/**)",
+      "Bash(curl -sv -H 'X-Site-Token: tIbdOBCGRwjXgLqM6ssMU7Ey627EstsvihWlOR0dLXpfiHIALQct6O9foGGNjo0u' 'https://api.siruta.ro/v1/counties/MS/localities' --max-time 10)",
+      "Bash(curl -s --http1.1 -H 'X-Site-Token: tIbdOBCGRwjXgLqM6ssMU7Ey627EstsvihWlOR0dLXpfiHIALQct6O9foGGNjo0u' 'https://api.siruta.ro/v1/counties/MS/localities' --max-time 10)",
+      "Bash(curl -s 'https://api.siruta.ro/v1/health' --max-time 5)",
+      "Bash(curl -s -H 'X-Site-Token: tIbdOBCGRwjXgLqM6ssMU7Ey627EstsvihWlOR0dLXpfiHIALQct6O9foGGNjo0u' -H \"Cache-Control: no-cache\" \"https://api.siruta.ro/v1/counties/MS/localities?_=$\\(date +%s%N\\)\" --max-time 10)",
+      "Read(//home/neluttu/.ssh/**)"
     ]
   }
 }

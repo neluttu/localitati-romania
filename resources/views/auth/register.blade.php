@@ -57,6 +57,22 @@
                         class="w-full border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-purple-500" required>
                 </div>
 
+                <div>
+                    <label for="terms" class="flex items-start gap-3 cursor-pointer">
+                        <input type="checkbox" name="terms" id="terms" value="1" @checked(old('terms'))
+                            class="mt-1 w-4 h-4 shrink-0 rounded border-gray-300 text-purple-600 focus:ring-purple-500">
+                        <span class="text-sm text-gray-600 leading-snug">
+                            Am citit și accept
+                            <a href="{{ route('legal.terms') }}" target="_blank" class="text-purple-600 hover:underline">termenii și condițiile</a>,
+                            <a href="{{ route('legal.privacy') }}" target="_blank" class="text-purple-600 hover:underline">politica de confidențialitate</a>
+                            și <a href="{{ route('legal.cookies') }}" target="_blank" class="text-purple-600 hover:underline">politica de cookies</a>.
+                        </span>
+                    </label>
+                    @error('terms')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+                </div>
+
                 <button type="submit" class="w-full bg-purple-500 text-white py-2 rounded-lg hover:bg-purple-600">
                     Înregistrează cont
                 </button>

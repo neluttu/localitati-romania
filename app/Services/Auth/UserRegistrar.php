@@ -2,11 +2,11 @@
 
 namespace App\Services\Auth;
 
+use App\Enums\UserRole;
+use App\Events\UserRegistered;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use App\Events\UserRegistered;
-use App\Enums\UserRole;
 
 class UserRegistrar
 {
@@ -20,6 +20,9 @@ class UserRegistrar
                 'provider' => 'local',
                 'provider_id' => null,
                 'role' => UserRole::User,
+                // Consent has to be demonstrable later, so record when it was
+                // given rather than only that the form was submitted.
+                'terms_accepted_at' => now(),
             ]);
 
             $user->profile()->create([
@@ -28,6 +31,7 @@ class UserRegistrar
             ]);
 
             event(new UserRegistered($user));
+
             return $user;
         });
     }

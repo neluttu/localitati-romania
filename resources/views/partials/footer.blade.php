@@ -31,5 +31,11 @@
             </svg>
         </a>
     </div>
+    <nav class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-gray-500">
+        <a href="{{ route('legal.terms') }}" class="hover:text-gray-800 transition-colors">Termeni și condiții</a>
+        <a href="{{ route('legal.privacy') }}" class="hover:text-gray-800 transition-colors">Confidențialitate</a>
+        <a href="{{ route('legal.cookies') }}" class="hover:text-gray-800 transition-colors">Cookies</a>
+    </nav>
+
     <p class="text-center text-sm text-gray-500">Copyright &copy; Neluttu</p>
 </footer>

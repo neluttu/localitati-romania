@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\Dashboard\SiteController;
 use App\Http\Controllers\Dashboard\StatsController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\LegalController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [IndexController::class, 'index'])->name('index');
@@ -20,6 +21,10 @@ Route::get('/view/counties/{county}/localities', fn ($county) => view('api.local
 Route::get('/exemple-api-judete-localitati', [IndexController::class, 'examples'])->name('examples.index');
 Route::get('/docs', fn () => view('docs.index'))->name('docs');
 
+// Legal
+Route::get('/termeni-si-conditii', [LegalController::class, 'terms'])->name('legal.terms');
+Route::get('/politica-de-confidentialitate', [LegalController::class, 'privacy'])->name('legal.privacy');
+Route::get('/politica-de-cookies', [LegalController::class, 'cookies'])->name('legal.cookies');
 
 // ===============================
 // Guest Only
@@ -96,6 +101,10 @@ Route::middleware(['auth'])->group(function (): void {
                     Route::get('/profile', [Account\ProfileController::class, 'edit'])->name('profile.edit');
                     Route::put('/profile', [Account\ProfileController::class, 'update'])->name('profile.update');
                     Route::delete('/profile/avatar', [Account\ProfileController::class, 'deleteAvatar'])->name('profile.avatar.delete');
+
+                    // Account deletion
+                    Route::get('/account/delete', [Account\AccountController::class, 'confirmDelete'])->name('account.delete');
+                    Route::delete('/account', [Account\AccountController::class, 'destroy'])->name('account.destroy');
                 });
 
             // ===============================
