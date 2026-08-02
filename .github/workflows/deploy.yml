@@ -167,6 +167,10 @@ jobs:
             storage/app/**
             storage/logs/**
             storage/db/**
+            # Compiled caches belong to the machine that runs the app. Shipping
+            # the runner's copies overwrites the server's, and a route cache
+            # built here would freeze the server on this checkout's route table.
+            bootstrap/cache/**
             public/.well-known/**
             public/LaravelLinkStorage.php
             public/.htaccess
