@@ -87,7 +87,7 @@
                 <p class="text-sm text-blue-800 font-medium mb-1">Header pentru request:</p>
                 <code class="text-xs text-blue-700 block break-all">X-Site-Token: {{ $site->token }}</code>
                 @if ($site->domain)
-                    <p class="text-xs text-blue-600 mt-2">Domeniu autorizat: <strong>{{ $site->domain }}</strong></p>
+                    <p class="text-xs text-blue-600 mt-2">Domeniu declarat: <strong>{{ $site->domain }}</strong> <span class="text-blue-500">(etichetă, nu restricție)</span></p>
                 @endif
             </div>
         </div>

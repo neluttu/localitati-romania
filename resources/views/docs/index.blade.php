@@ -87,8 +87,9 @@
                         </div>
 
                         <p class="text-gray-600 mb-6">
-                            Toate request-urile către API necesită un token valid. Token-ul este legat de domeniul înregistrat
-                            și validează automat că request-ul vine de pe site-ul corect.
+                            Toate request-urile către API necesită un token valid. Token-ul identifică site-ul care apelează,
+                            pentru statistici de utilizare - funcționează de pe orice domeniu, din aplicații server-side
+                            și din mediul local de dezvoltare.
                         </p>
 
                         {{-- Code Block --}}
@@ -105,8 +106,28 @@
                             </div>
                         </div>
 
-                        {{-- Domain Matching --}}
-                        <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200/50 rounded-2xl p-6 mb-6">
+                        {{-- Where the token works --}}
+                        <div class="bg-gradient-to-br from-emerald-50 to-teal-50 border border-emerald-200/50 rounded-2xl p-6 mb-6">
+                            <div class="flex gap-4">
+                                <div class="shrink-0 w-10 h-10 bg-emerald-100 rounded-xl flex items-center justify-center">
+                                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-emerald-900 mb-1">Fără restricții de domeniu</h4>
+                                    <p class="text-emerald-800 text-sm">
+                                        Token-ul funcționează de oriunde: din browser, din backend, de pe
+                                        <code class="px-1.5 py-0.5 bg-emerald-200/50 rounded font-mono text-xs">localhost</code>
+                                        sau din Postman. Domeniul completat la înregistrare este doar o etichetă care te
+                                        ajută să-ți recunoști site-urile în panou.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        {{-- Rate limit --}}
+                        <div class="bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200/50 rounded-2xl p-6">
                             <div class="flex gap-4">
                                 <div class="shrink-0 w-10 h-10 bg-amber-100 rounded-xl flex items-center justify-center">
                                     <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -114,39 +135,13 @@
                                     </svg>
                                 </div>
                                 <div>
-                                    <h4 class="font-semibold text-amber-900 mb-1">Wildcard Domains</h4>
+                                    <h4 class="font-semibold text-amber-900 mb-1">Limită de apeluri</h4>
                                     <p class="text-amber-800 text-sm">
-                                        Înregistrează <code class="px-1.5 py-0.5 bg-amber-200/50 rounded font-mono text-xs">*.domeniu.ro</code>
-                                        pentru a permite toate subdomeniile automat.
+                                        Maximum <strong>120 de request-uri pe minut</strong>. Peste această limită primești
+                                        <code class="px-1.5 py-0.5 bg-amber-200/50 rounded font-mono text-xs">429 Too Many Requests</code>.
                                     </p>
                                 </div>
                             </div>
-                        </div>
-
-                        {{-- Domain Table --}}
-                        <div class="overflow-hidden rounded-2xl border border-gray-200">
-                            <table class="w-full">
-                                <thead>
-                                    <tr class="bg-gray-50">
-                                        <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Domeniu înregistrat</th>
-                                        <th class="px-6 py-4 text-left text-sm font-semibold text-gray-900">Domenii acceptate</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-100">
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="px-6 py-4"><code class="text-sm font-mono text-purple-600 bg-purple-50 px-2 py-1 rounded">example.com</code></td>
-                                        <td class="px-6 py-4 text-sm text-gray-600">example.com, www.example.com, sub.example.com</td>
-                                    </tr>
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="px-6 py-4"><code class="text-sm font-mono text-purple-600 bg-purple-50 px-2 py-1 rounded">*.example.com</code></td>
-                                        <td class="px-6 py-4 text-sm text-gray-600">Orice subdomeniu + domeniul principal</td>
-                                    </tr>
-                                    <tr class="hover:bg-gray-50 transition-colors">
-                                        <td class="px-6 py-4"><code class="text-sm font-mono text-purple-600 bg-purple-50 px-2 py-1 rounded">localhost</code></td>
-                                        <td class="px-6 py-4 text-sm text-gray-600">localhost, localhost:3000, localhost:8080</td>
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
                     </section>
 

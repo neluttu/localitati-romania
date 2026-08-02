@@ -50,9 +50,10 @@
             <h3 class="font-medium text-blue-800 mb-2">Cum funcționează?</h3>
             <ul class="text-sm text-blue-700 space-y-1">
                 <li>• Fiecare site primește un token API unic</li>
-                <li>• Token-ul funcționează doar pentru domeniul specificat</li>
                 <li>• Trimite token-ul în header-ul <code class="bg-blue-100 px-1 rounded">X-Site-Token</code></li>
-                <li>• Folosește <code class="bg-blue-100 px-1 rounded">*.example.com</code> pentru a permite toate subdomeniile</li>
+                <li>• Token-ul funcționează de pe orice domeniu, din backend și de pe <code class="bg-blue-100 px-1 rounded">localhost</code></li>
+                <li>• Domeniul de mai sus e o etichetă: separă statisticile pe site-urile tale</li>
+                <li>• Limită: 120 de request-uri pe minut</li>
             </ul>
         </div>
     </div>
