@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Account;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UserProfileRequest;
+use App\Models\UserProfile;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -16,7 +17,11 @@ class ProfileController extends Controller
     public function edit(): View
     {
         $user = auth()->user();
-        $profile = $user->profile; // relația hasOne
+
+        // Accounts created through Google or Facebook never get a profile row,
+        // so the relation can be null. An empty instance keeps the form
+        // renderable without writing anything on a GET.
+        $profile = $user->profile ?? new UserProfile;
 
         // Use dashboard view if accessing from dashboard routes
         $view = request()->routeIs('dashboard.*') ? 'dashboard.profile.edit' : 'account.profile';
@@ -27,7 +32,9 @@ class ProfileController extends Controller
     public function update(UserProfileRequest $request): RedirectResponse
     {
         $user = auth()->user();
-        $profile = $user->profile;
+        // Saving is the point at which a profile has to exist, so create it
+        // here for the accounts that never got one at sign-up.
+        $profile = $user->profile()->firstOrCreate([]);
 
         $data = $request->validated();
 
