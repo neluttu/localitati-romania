@@ -32,4 +32,11 @@
     label {
         @apply cursor-pointer;
     }
+
+    /* Keeps Alpine-controlled panels hidden until Alpine takes over, so the
+       cookie banner does not flash on screen before it knows a choice was
+       already made. */
+    [x-cloak] {
+        display: none !important;
+    }
 }

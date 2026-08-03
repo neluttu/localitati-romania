@@ -106,6 +106,8 @@
     </div>
 
     @include('partials.footer')
+
+    <x-cookie-consent />
 </body>
 
 </html>

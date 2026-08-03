@@ -34,6 +34,20 @@ class LegalPagesTest extends TestCase
             ->assertSee('Termeni și condiții', false);
     }
 
+    /**
+     * The limits on availability only hold up because the service is a free,
+     * unfunded side project, so the terms have to say so plainly rather than
+     * disclaim uptime out of nowhere.
+     */
+    public function test_the_terms_state_the_project_is_personal_and_non_profit(): void
+    {
+        $this->get(route('legal.terms'))
+            ->assertStatus(200)
+            ->assertSee('proiect personal, non-profit', false)
+            ->assertSee('în funcție de disponibilitate', false)
+            ->assertSee('planul de găzduire', false);
+    }
+
     public function test_the_privacy_page_lists_what_is_collected(): void
     {
         $this->get(route('legal.privacy'))

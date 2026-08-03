@@ -38,6 +38,12 @@
         <a href="{{ url('/termeni-si-conditii') }}" class="hover:text-gray-800 transition-colors">Termeni și condiții</a>
         <a href="{{ url('/politica-de-confidentialitate') }}" class="hover:text-gray-800 transition-colors">Confidențialitate</a>
         <a href="{{ url('/politica-de-cookies') }}" class="hover:text-gray-800 transition-colors">Cookies</a>
+        {{-- Withdrawing consent has to be as easy as giving it, so the choice
+             is reachable from every page rather than only from the banner. --}}
+        <button type="button" class="hover:text-gray-800 transition-colors"
+            onclick="window.dispatchEvent(new CustomEvent('open-cookie-preferences'))">
+            Setări cookies
+        </button>
     </nav>
 
     <p class="text-center text-sm text-gray-500">Copyright &copy; Neluttu</p>

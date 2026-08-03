@@ -94,6 +94,8 @@
             </main>
         </div>
     </div>
+
+    <x-cookie-consent />
 </body>
 
 </html>

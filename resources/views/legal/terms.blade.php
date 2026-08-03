@@ -14,6 +14,13 @@
                     Datele provin din surse publice oficiale și sunt oferite ca atare.
                 </p>
                 <p class="mt-3">
+                    <strong>siruta.ro este un proiect personal, non-profit.</strong> Este dezvoltat și întreținut de o
+                    singură persoană, în timpul liber. Nu este operat de o societate comercială, nu urmărește obținerea
+                    de profit și nu percepe niciun tarif - accesul este și rămâne gratuit. Menționăm asta nu ca detaliu
+                    de context, ci pentru că este premisa pe care se sprijină restul acestor termeni, în special
+                    limitele de disponibilitate de la punctul 4.
+                </p>
+                <p class="mt-3">
                     Serviciul este operat de <strong>Neluttu</strong>. Pentru orice întrebare legată de acești termeni
                     ne poți scrie la <a href="mailto:contact@siruta.ro" class="text-purple-600 hover:underline">contact@siruta.ro</a>.
                 </p>
@@ -46,20 +53,55 @@
             </section>
 
             <section>
-                <h2 class="text-xl font-semibold text-gray-900 mb-3">4. Disponibilitate și garanții</h2>
+                <h2 class="text-xl font-semibold text-gray-900 mb-3">4. Disponibilitate: ce nu îți putem garanta</h2>
                 <p>
-                    Serviciul este oferit gratuit, „ca atare", fără garanție de disponibilitate neîntreruptă și fără
-                    un acord de nivel al serviciului. Depunem eforturi rezonabile ca datele să fie corecte și
-                    actualizate, dar nu garantăm că sunt lipsite de erori. Verifică datele critice înainte să te
-                    bazezi pe ele în decizii importante.
+                    Serviciul este oferit <strong>„ca atare" și „în funcție de disponibilitate"</strong>, fără nicio
+                    garanție de funcționare neîntreruptă și fără un acord privind nivelul serviciului (SLA). Nu
+                    garantăm un anumit grad de disponibilitate, un timp de răspuns, o capacitate minimă de apeluri
+                    și nici păstrarea nemodificată a unui anumit set de endpointuri.
                 </p>
+                <p class="mt-3">Disponibilitatea depinde de factori pe care nu îi controlăm integral:</p>
+                <ul class="list-disc pl-5 space-y-2 mt-2">
+                    <li>resursele incluse în planul de găzduire - procesor, memorie, număr de procese simultane,
+                        trafic lunar - și limitele impuse de furnizor;</li>
+                    <li>numărul total de utilizatori și volumul de apeluri pe care îl generează, inclusiv creșteri
+                        bruște pe care nu le putem anticipa;</li>
+                    <li>disponibilitatea furnizorului de găzduire, a rețelei și a serviciilor de care depinde;</li>
+                    <li>timpul pe care îl putem aloca proiectului, fiind o activitate desfășurată în timpul liber.</li>
+                </ul>
+                <p class="mt-3">
+                    În consecință, ne rezervăm dreptul de a reduce limita de apeluri, de a dezactiva temporar
+                    funcționalități, de a suspenda accesul unui utilizator al cărui consum afectează ceilalți
+                    utilizatori, precum și de a întrerupe serviciul - parțial sau integral, temporar sau definitiv.
+                    Vom anunța din timp o încetare definitivă în măsura în care ne stă în putință, dar nu ne putem
+                    obliga la un preaviz în caz de forță majoră, de depășire a resurselor sau de decizie a
+                    furnizorului de găzduire.
+                </p>
+                <p class="mt-3">
+                    Depunem eforturi rezonabile ca datele să fie corecte și actualizate, dar nu garantăm că sunt
+                    lipsite de erori. Verifică datele critice înainte să te bazezi pe ele în decizii importante.
+                </p>
+                <div class="mt-4 rounded-xl border border-amber-200 bg-amber-50/60 p-4">
+                    <p class="text-sm text-amber-900">
+                        <strong>Recomandare practică:</strong> dacă integrezi API-ul într-un produs de care depinzi,
+                        păstrează o copie locală a datelor de care ai nevoie. Nomenclatorul SIRUTA se modifică rar,
+                        iar o copie proprie te protejează complet de o eventuală indisponibilitate a serviciului.
+                    </p>
+                </div>
             </section>
 
             <section>
                 <h2 class="text-xl font-semibold text-gray-900 mb-3">5. Limitarea răspunderii</h2>
                 <p>
-                    În limitele permise de lege, nu răspundem pentru pierderi indirecte, pierderi de date sau de
-                    profit rezultate din folosirea ori din indisponibilitatea serviciului.
+                    Serviciul fiind gratuit și fără scop lucrativ, răspunderea este limitată la maximul permis de
+                    lege. Nu răspundem pentru pierderi directe sau indirecte, pierderi de date, de profit ori de
+                    oportunitate, nici pentru costuri de înlocuire, rezultate din folosirea serviciului, din
+                    imposibilitatea de a-l folosi, din întreruperea sau încetarea lui, ori din erori în date.
+                </p>
+                <p class="mt-3">
+                    Nimic din acești termeni nu limitează răspunderea în situațiile în care legea nu permite acest
+                    lucru, iar dacă ești consumator, îți păstrezi drepturile prevăzute de legislația de protecție a
+                    consumatorilor.
                 </p>
             </section>
 

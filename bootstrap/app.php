@@ -24,5 +24,11 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => RoleMiddleware::class,
         ]);
 
+        // The consent choice is written by the banner in the browser, so it
+        // cannot be encrypted server-side - Laravel would discard it as
+        // tampered on the way back in.
+        $middleware->encryptCookies(except: [
+            'cookie_consent',
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {})->create();

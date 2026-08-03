@@ -52,4 +52,13 @@ return [
         'api_url' => env('HOMEPAGE_API_URL', '/v1'),
     ],
 
+    /*
+    | Leave the id unset and no analytics exist at all: the consent banner
+    | still records the choice, but there is nothing for it to load. Setting
+    | it is what turns the analytics category into a real one.
+    */
+    'google_analytics' => [
+        'id' => env('GOOGLE_ANALYTICS_ID'),
+    ],
+
 ];
