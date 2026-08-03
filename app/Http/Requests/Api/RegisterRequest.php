@@ -25,6 +25,10 @@ class RegisterRequest extends FormRequest
                     ->numbers()
                     ->symbols(),
             ],
+
+            // The published policies say consent is taken when an account is
+            // created, so this second registration path must not skip it.
+            'terms' => ['accepted'],
         ];
     }
 
@@ -37,6 +41,7 @@ class RegisterRequest extends FormRequest
             'email.unique' => 'Această adresă de email este deja înregistrată.',
             'password.required' => 'Parola este obligatorie.',
             'password.confirmed' => 'Confirmarea parolei nu coincide.',
+            'terms.accepted' => 'Trebuie să accepți termenii și condițiile și politica de confidențialitate.',
         ];
     }
 }
