@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name') }} - Dashboard</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @include('partials.analytics')
 </head>
 
 <body class="min-h-screen bg-gray-50 font-geist text-gray-700">

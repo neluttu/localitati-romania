@@ -1,20 +1,9 @@
-@php
-    /**
-     * Without a configured measurement id there is nothing to load, so the
-     * analytics branch is not rendered at all - the page then contains no
-     * reference to any tracker, which is what makes the policy page true.
-     */
-    $analyticsId = config('services.google_analytics.id');
-@endphp
-
 <script>
     window.cookieConsent = function () {
         return {
-            // Bumping this re-asks everyone. Change it when the categories
-            // change, never for a wording tweak.
-            version: 1,
-            storageKey: 'cookie_consent',
-            lifetimeDays: 180,
+            version: {{ config('cookie_consent.version') }},
+            storageKey: @json(config('cookie_consent.cookie')),
+            lifetimeDays: {{ config('cookie_consent.lifetime_days') }},
 
             open: false,
             preferencesOpen: false,
@@ -28,11 +17,9 @@
                     return;
                 }
 
+                // The stored choice was already replayed to the tag in the head,
+                // so there is nothing to signal here - only the banner state.
                 this.analytics = saved.analytics === true;
-
-                if (this.analytics) {
-                    this.loadAnalytics();
-                }
             },
 
             read() {
@@ -70,9 +57,23 @@
                 this.open = false;
                 this.preferencesOpen = false;
 
-                if (analytics) {
-                    this.loadAnalytics();
+                this.signalConsent(analytics);
+            },
+
+            /**
+             * Tell the tag what was decided. Refusing is signalled just as
+             * explicitly as accepting: a visitor who turns analytics back off
+             * must stop being measured within the same page view, not on the
+             * next reload.
+             */
+            signalConsent(analytics) {
+                if (typeof window.gtag !== 'function') {
+                    return;
                 }
+
+                window.gtag('consent', 'update', {
+                    analytics_storage: analytics ? 'granted' : 'denied',
+                });
             },
 
             acceptAll() { this.save(true); },
@@ -86,29 +87,6 @@
                 this.open = false;
             },
 
-            @if ($analyticsId)
-                loadAnalytics() {
-                    if (window.__analyticsLoaded) {
-                        return;
-                    }
-                    window.__analyticsLoaded = true;
-
-                    const id = @json($analyticsId);
-                    const tag = document.createElement('script');
-                    tag.async = true;
-                    tag.src = 'https://www.googletagmanager.com/gtag/js?id=' + id;
-                    document.head.appendChild(tag);
-
-                    window.dataLayer = window.dataLayer || [];
-                    window.gtag = function () { dataLayer.push(arguments); };
-                    gtag('js', new Date());
-                    gtag('config', id, { anonymize_ip: true });
-                },
-            @else
-                // No measurement id configured: consent is still recorded, but
-                // there is nothing to switch on.
-                loadAnalytics() {},
-            @endif
         };
     };
 </script>

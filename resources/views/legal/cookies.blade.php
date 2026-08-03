@@ -15,12 +15,22 @@
                 </p>
                 <p class="mt-3">
                     <strong>Analiză.</strong> Google Analytics, cu adresa IP anonimizată, ca să vedem ce pagini sunt
-                    folosite și ce merită îmbunătățit. Acestea se încarcă <strong>doar dacă le accepți</strong>.
-                    Dacă refuzi sau nu alegi nimic, nu se încarcă deloc - nu doar că nu sunt setate cookie-uri,
-                    ci scriptul nici măcar nu este cerut de la Google.
+                    folosite și ce merită îmbunătățit. Măsurarea pornește <strong>doar dacă o accepți</strong>.
                 </p>
                 <p class="mt-3">
-                    Nu folosim cookie-uri de publicitate și nu vindem date către rețele de marketing.
+                    Îți explicăm exact cum funcționează, ca să știi la ce te aștepți. Eticheta Google este prezentă
+                    în fiecare pagină, dar pornește cu măsurarea <strong>dezactivată</strong> - nu scrie niciun
+                    cookie, nu îți atribuie niciun identificator și nu trimite date de analiză. Abia când apeși
+                    „Accept" îi transmitem semnalul care pornește măsurarea. Dacă refuzi, rămâne dezactivată.
+                </p>
+                <p class="mt-3">
+                    Partea care ține de onestitate: pentru că fișierul etichetei este descărcat de la Google chiar
+                    și înainte de alegerea ta, Google vede acea cerere - deci adresa ta IP și tipul browserului.
+                    Nu primește însă nimic despre navigarea ta și nu îți poate urmări parcursul prin site.
+                </p>
+                <p class="mt-3">
+                    Semnalele de publicitate rămân permanent dezactivate, indiferent ce alegi: nu folosim cookie-uri
+                    de publicitate, nu facem remarketing și nu vindem date către rețele de marketing.
                 </p>
             </section>
 
@@ -105,8 +115,9 @@
                     </table>
                 </div>
                 <p class="mt-3 text-sm text-gray-600">
-                    Sunt setate de Google, cu adresa IP anonimizată. Dacă refuzi, nu apar deloc - scriptul Google
-                    nici măcar nu este cerut.
+                    Sunt setate de Google, cu adresa IP anonimizată, și <strong>numai după ce accepți</strong>.
+                    Dacă refuzi sau nu alegi nimic, aceste cookie-uri nu sunt scrise deloc. Le poți verifica singur
+                    în consola browserului, la secțiunea Application → Cookies.
                 </p>
             </section>
 

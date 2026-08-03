@@ -37,26 +37,50 @@ class CookieConsentTest extends TestCase
     }
 
     /**
-     * Nothing may load before a choice is made, so the tag must never appear
-     * as a plain script the browser would fetch on its own.
+     * The tag loads on every page so Google's own check can find it, which is
+     * the whole reason for running consent mode instead of withholding the
+     * script.
      */
-    public function test_analytics_is_not_embedded_as_a_loading_script(): void
-    {
-        config(['services.google_analytics.id' => 'G-TEST12345']);
-
-        $response = $this->get('/docs');
-
-        $response->assertStatus(200)
-            ->assertDontSee('<script async src="https://www.googletagmanager.com', false);
-    }
-
-    public function test_the_analytics_id_is_available_to_the_page_when_configured(): void
+    public function test_the_tag_is_present_when_configured(): void
     {
         config(['services.google_analytics.id' => 'G-TEST12345']);
 
         $this->get('/docs')
             ->assertStatus(200)
-            ->assertSee('G-TEST12345', false);
+            ->assertSee('googletagmanager.com/gtag/js?id=G-TEST12345', false);
+    }
+
+    /**
+     * Consent mode only protects anyone if the denied default is already in
+     * the dataLayer when the tag starts. Emitted afterwards, the tag measures
+     * first and reads the default second - the ordering is the safeguard, so
+     * it is asserted rather than assumed.
+     */
+    public function test_measurement_is_denied_before_the_tag_loads(): void
+    {
+        config(['services.google_analytics.id' => 'G-TEST12345']);
+
+        $html = $this->get('/docs')->assertStatus(200)->getContent();
+
+        $defaultAt = strpos($html, "'consent', 'default'");
+        $tagAt = strpos($html, 'googletagmanager.com/gtag/js');
+
+        $this->assertNotFalse($defaultAt, 'Lipsește setarea implicită de consimțământ.');
+        $this->assertNotFalse($tagAt, 'Lipsește eticheta Google.');
+        $this->assertLessThan($tagAt, $defaultAt, 'Implicitul trebuie emis înaintea etichetei.');
+        $this->assertStringContainsString("analytics_storage: 'denied'", $html);
+    }
+
+    public function test_advertising_signals_are_denied_and_never_asked_for(): void
+    {
+        config(['services.google_analytics.id' => 'G-TEST12345']);
+
+        $html = $this->get('/docs')->assertStatus(200)->getContent();
+
+        $this->assertStringContainsString("ad_storage: 'denied'", $html);
+        $this->assertStringContainsString("ad_user_data: 'denied'", $html);
+        $this->assertStringContainsString("ad_personalization: 'denied'", $html);
+        $this->assertStringNotContainsString("ad_storage: 'granted'", $html);
     }
 
     public function test_no_analytics_id_leaks_when_none_is_configured(): void

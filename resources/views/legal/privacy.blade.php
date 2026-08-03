@@ -71,6 +71,10 @@
                                 <td class="px-4 py-3">Emailuri legate de cont (confirmare, resetare parolă)</td>
                                 <td class="px-4 py-3">executarea contractului - art. 6 alin. (1) lit. b)</td>
                             </tr>
+                            <tr>
+                                <td class="px-4 py-3">Statistici de navigare prin Google Analytics</td>
+                                <td class="px-4 py-3">consimțământ - art. 6 alin. (1) lit. a), pe care îl poți retrage oricând</td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -100,6 +104,12 @@
                 <p class="mt-3">
                     Dacă alegi autentificarea cu Google sau Facebook, aceștia prelucrează datele conform propriilor
                     politici, pe care le poți citi pe site-urile lor.
+                </p>
+                <p class="mt-3">
+                    Dacă accepți cookie-urile de analiză, datele de navigare ajung la <strong>Google Ireland
+                    Limited</strong>, cu adresa IP anonimizată. Fără acceptul tău, măsurarea rămâne dezactivată.
+                    Detaliile exacte, inclusiv ce vede Google chiar și atunci când refuzi, sunt în
+                    <a href="{{ url('/politica-de-cookies') }}" class="text-purple-600 hover:underline">politica de cookies</a>.
                 </p>
             </section>
 

@@ -8,6 +8,8 @@
     <meta name="api-url" content="{{ config('services.homepage.api_url') }}">
     <title>{{ config('app.name', 'SIRUTA - Județe și orașe România pentru developeri') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    @include('partials.analytics')
 </head>
 
 <body class="min-h-screen flex flex-col font-geist text-gray-700">
